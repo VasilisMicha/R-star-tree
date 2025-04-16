@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DBTechnology.iml" filepath="$PROJECT_DIR$/.idea/DBTechnology.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dbtechnology/src/src.iml" filepath="$PROJECT_DIR$/dbtechnology/src/src.iml" />
       <module fileurl="file://$PROJECT_DIR$/untitled/untitled.iml" filepath="$PROJECT_DIR$/untitled/untitled.iml" />
     </modules>
   </component>
