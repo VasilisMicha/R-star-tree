@@ -15,4 +15,9 @@ public class Point {
     public String toString() {
         return "ID: " + id + ", Name: " + name + ", Coordinates: " + Arrays.toString(coordinates);
     }
+
+    public double[] getCoordinates() {
+        return coordinates;
+    }
+
 }

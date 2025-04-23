@@ -67,7 +67,7 @@ public class DataParser {
      //Method test
     public static void main(String[] args) {
         //Set the path to the file
-        Path path = Paths.get("src/dbtechnology/data2.csv");
+        Path path = Paths.get("src/dbtechnology/data.csv");
         String filePath = path.toString();
 
         List<Point> points = parsePointsAutoDetect(filePath);
