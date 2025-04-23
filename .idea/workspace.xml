@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="DataFileHandler and Point class">
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/BoundingBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Bounds.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/EntryComparator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/IdDistancePair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LeafEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LinearSearch.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LinearSearchNearestNeighbours.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LinearSearchRangeQuery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,11 +31,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -41,7 +52,8 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DataFileHnadler&quot;
+    &quot;git-widget-placeholder&quot;: &quot;DataFileHnadler&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -53,6 +65,15 @@
       <option name="presentableId" value="Default" />
       <updated>1743614581046</updated>
     </task>
+    <task id="LOCAL-00001" summary="DataFileHandler and Point class">
+      <option name="closed" value="true" />
+      <created>1744557776728</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1744557776728</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -65,5 +86,20 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="DataFileHandler and Point class" />
+    <option name="LAST_COMMIT_MESSAGE" value="DataFileHandler and Point class" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dbtechnology/src/Main.java</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

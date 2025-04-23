@@ -7,15 +7,18 @@ import java.util.ArrayList;
 class Point implements Serializable {
     private long id;
     private ArrayList<Double> coords;
+    private String name;
 
     /**
      * Constructor for Point class
      * @param id1
      * @param coords1
+     * @param name1
      */
-    public Point(long id1, ArrayList<Double> coords1){
+    public Point(long id1, ArrayList<Double> coords1,String name1){
         id=id1;
         coords=coords1;
+        name=name1;
     }
 
     /**
@@ -30,8 +33,9 @@ class Point implements Serializable {
             throw new IllegalArgumentException("Wrong dimensions");
         }
         this.id=Long.parseLong(stringArray[0]);
+        this.name=stringArray[1];
         this.coords=new ArrayList<>();
-        for (int i=1; i<len;i++)
+        for (int i=2; i<len;i++)
             coords.add(Double.parseDouble(stringArray[i]));
     }
 
@@ -53,13 +57,21 @@ class Point implements Serializable {
     }
 
     /**
+     * Getter for name
+     * @return name
+     */
+    String getName(){
+        return name;
+    }
+
+    /**
      * method that creates a string based on a record
      * @return the string
      */
     @Override
     public String toString(){
-        StringBuilder pointToString= new StringBuilder(id+","+coords.get(0));
-        for(int i=1; i<coords.size(); i++){
+        StringBuilder pointToString= new StringBuilder(id+","+name+","+coords.get(0));
+        for(int i=2; i<coords.size(); i++){
             pointToString.append(",").append(coords.get(i));
         }
         return String.valueOf(pointToString);
