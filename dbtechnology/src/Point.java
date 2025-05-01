@@ -1,3 +1,9 @@
+/**
+ * This class represents a point in multidimensional space with a unique identifier (id), name, and coordinate array.
+ * Used to store and search data in R*-Tree.
+ * @author VasilisMicha, athinaanv
+**/
+
 import java.util.Arrays;
 
 public class Point {
@@ -18,6 +24,10 @@ public class Point {
 
     public double[] getCoordinates() {
         return coordinates;
+    }
+
+    public int getSize(){
+        return (Integer.SIZE / 8) + coordinates.length * (Double.SIZE / 8);
     }
 
 }

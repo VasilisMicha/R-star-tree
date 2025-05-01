@@ -4,13 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation.">
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/RangeQuery.java" afterDir="false" />
+    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates.">
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Entry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/InternalNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LeafEntry.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LeafNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Node.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/QueryDimensions.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/RangeQuery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/src/DataParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/DataParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/Point.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,33 +62,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.DataParser.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.RangeQuery.executor": "Run",
-    "Application.Run DataParser.executor": "Run",
-    "Application.mainParser.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "DataParser",
-    "jdk.selected.JAVA_MODULE": "21",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/vlaho/IdeaProjects/dbtechnology/dbtechnology/src",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/vasil/Documents/Projects/IdeaProjects/DBTechnology/untitled/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.12150669",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.Mappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.DataParser.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RStarTree.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RangeQuery.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Run DataParser.executor&quot;: &quot;Run&quot;,
+    &quot;Application.mainParser.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DataParser&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/vlaho/IdeaProjects/dbtechnology/dbtechnology/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/vasil/Documents/Projects/IdeaProjects/DBTechnology/untitled/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.12150669&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="" />
@@ -118,7 +128,13 @@
       <workItem from="1744804051401" duration="1015000" />
       <workItem from="1744805110181" duration="7608000" />
       <workItem from="1745421313891" duration="1626000" />
-      <workItem from="1745423185700" duration="3056000" />
+      <workItem from="1745423185700" duration="5878000" />
+      <workItem from="1745505309242" duration="1257000" />
+      <workItem from="1745514073421" duration="6608000" />
+      <workItem from="1745602476067" duration="9501000" />
+      <workItem from="1745674740896" duration="5496000" />
+      <workItem from="1746087563596" duration="5453000" />
+      <workItem from="1746101050584" duration="4635000" />
     </task>
     <task id="LOCAL-00001" summary="add DataParser">
       <option name="closed" value="true" />
@@ -136,7 +152,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744812983421</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates.">
+      <option name="closed" value="true" />
+      <created>1745427160024</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1745427160024</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +198,7 @@
     <MESSAGE value="add DataParser" />
     <MESSAGE value="." />
     <MESSAGE value="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation." />
+    <MESSAGE value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
   </component>
 </project>
