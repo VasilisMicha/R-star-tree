@@ -1,4 +1,6 @@
-public class Rectangle {
+import java.io.Serializable;
+
+public class Rectangle implements Serializable {
     private final double[] min;
     private final double[] max;
 
@@ -7,6 +9,23 @@ public class Rectangle {
             throw new IllegalArgumentException("Dimensions mismatch.");
         this.min = min.clone();
         this.max = max.clone();
+    }
+
+    public Point getCenter() {
+        double[] coords = new double[min.length];
+        for (int i = 0; i < min.length; i++) {
+            coords[i] = (min[i] + max[i]) / 2;
+        }
+        return new Point(coords);
+    }
+
+    public double distanceTo(Point p) {
+        double sum = 0;
+        for (int i = 0; i < min.length; i++) {
+            double diff = getCenter().getCoordinates()[i] - p.getCoordinates()[i];
+            sum += diff * diff;
+        }
+        return Math.sqrt(sum);
     }
 
     /** Calculates the hypervolume (area in n-D). */

@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-//        RStarTree tree = new RStarTree(2);
-
+        IndexFileHandler.initializeIndexFile(2, true);
+        System.out.println(IndexFileHandler.calculateMaxEntriesInNode());
     }
 }

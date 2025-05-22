@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.List;
 
-public class Node {
+public class Node implements Serializable {
     private List<Entry> entries;
     private final boolean isLeaf;
     private final long blockId;

@@ -1,26 +1,130 @@
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RStarTree {
     private Node root;
-    private final int maxEntries;
-    private final int minEntries;
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
+    private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
+    private int currentLevel;
+    private final double REINSERT_P = 0.3;
 
-    public RStarTree(int maxEntries) {
-        this.maxEntries = maxEntries;
-        this.minEntries = (int) (maxEntries * 0.4); // Common heuristic
+    public RStarTree() {
         this.root = new Node(new ArrayList<>(), true, nextBlockId++);
+        IndexFileHandler.setRootBlockId((int) root.getBlockId());
+        IndexFileHandler.setTreeHeight(1);
+        IndexFileHandler.updateNode(root, 1); // Persist root node
+    }
+
+    public Node getRoot(){
+        return root;
     }
 
     /**
      * Inserts a new point into the R*-tree
      */
     public void insert(Point point) {
-        Rectangle rect = point.toRectangle();
-        Node leaf = chooseSubtree(root, rect);
-        // Rest of insertion logic would go here
+        Entry newEntry = new Entry(point.toRectangle(), -1, true);
+        Node leaf = chooseSubtree(root, newEntry.getRectangle());
+        leaf.addEntry(newEntry);
+
+        if (leaf.getEntries().size() > maxEntries) {
+            overflowTreatment(leaf, new ArrayList<>(leaf.getEntries()), getCurrentLevel(leaf));
+        } else {
+            IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight()); // Add this
+        }
+        adjustTree(leaf);
+    }
+
+    private void Insert(Entry E, int level) {
+        // I1: ChooseSubtree
+        Node N = chooseSubtree(root, E.getRectangle());
+
+        // I2: Overflow check
+        if (N.getEntries().size() < maxEntries) {
+            N.addEntry(E);
+        } else {
+            // I2: OverflowTreatment
+            List<Entry> allEntries = new ArrayList<>(N.getEntries());
+            allEntries.add(E);
+            overflowTreatment(N, allEntries, level);
+        }
+
+        // I4: Adjust covering rectangles
+        adjustTree(N);
+    }
+
+    private void overflowTreatment(Node N, List<Entry> entries, int level) {
+        // OT1: Reinsert or Split
+        if (level != 0 && currentLevel == level) {
+            reinsert(N, entries);
+        } else {
+            split(N, entries);
+        }
+    }
+
+    private void reinsert(Node N, List<Entry> entries) {
+        // RI1: Compute distances
+        Rectangle nodeMBR = computeMBR(entries);
+        Point center = nodeMBR.getCenter();
+
+        entries.sort((e1, e2) ->
+                Double.compare(e2.getRectangle().distanceTo(center),
+                        e1.getRectangle().distanceTo(center)));
+
+        // RI2: Remove first p entries
+        int p = (int) (entries.size() * REINSERT_P);
+        List<Entry> toReinsert = new ArrayList<>(entries.subList(0, p));
+        entries = entries.subList(p, entries.size());
+
+        // Update node
+        N.getEntries().clear();
+        N.getEntries().addAll(entries);
+        updateMBR(N);
+        IndexFileHandler.updateNode(N, IndexFileHandler.getTreeHeight());
+
+        // Reinsert
+        toReinsert.forEach(e -> Insert(e, currentLevel));
+    }
+
+    private int getCurrentLevel(Node node) {
+        int level = 0;
+        while (node.getBlockId() != IndexFileHandler.getRootBlockId() && node != null) {
+            level++;
+            node = IndexFileHandler.readNode(node.getParentNodeId());
+        }
+        return level;
+    }
+
+    private void adjustTree(Node node) {
+        Set<Long> visited = new HashSet<>(); // Prevent cycles
+        while (node != null && !visited.contains(node.getBlockId())) {
+            visited.add(node.getBlockId());
+            if (updateMBR(node)) {  // Modified to return boolean
+                IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
+            }
+            node = node.getParentNodeId() != -1
+                    ? IndexFileHandler.readNode(node.getParentNodeId())
+                    : null;
+        }
+    }
+
+    private boolean updateMBR(Node node) {
+        boolean changed = false;
+        if (!node.isLeaf()) {
+            for (Entry entry : node.getEntries()) {
+                Node child = IndexFileHandler.readNode(entry.getBlockId());
+                Rectangle newMBR = computeMBR(child.getEntries());
+                if (!newMBR.equals(entry.getRectangle())) {
+                    entry.setRectangle(newMBR);
+                    changed = true;
+                }
+            }
+        }
+        return changed;
     }
 
     /**
@@ -93,41 +197,49 @@ public class RStarTree {
         return totalOverlapEnlargement;
     }
 
+
     /**
-     * Splits an overflowing node into two new nodes and updates the tree structure.
+     * Splits an overflowing node according to R*-tree rules
      */
-    private void splitNode(Node node) {
-        List<Entry> entries = node.getEntries();
-        int splitAxis = chooseSplitAxis(entries);
-        List<Entry> sortedEntries = sortEntriesAlongAxis(entries, splitAxis, true);
+    private void split(Node node, List<Entry> allEntries) {
+        // S1: ChooseSplitAxis
+        int splitAxis = chooseSplitAxis(allEntries);
+
+        // S2: ChooseSplitIndex
+        List<Entry> sortedEntries = sortEntriesAlongAxis(allEntries, splitAxis, true);
         int splitIndex = chooseSplitIndex(sortedEntries, splitAxis);
 
-        // Create two groups
+        // S3: Distribute entries
         List<Entry> group1 = new ArrayList<>(sortedEntries.subList(0, splitIndex));
         List<Entry> group2 = new ArrayList<>(sortedEntries.subList(splitIndex, sortedEntries.size()));
 
-        // Create new nodes with parent reference
-        Node newNode1 = createNewNode(node.isLeaf(), node.getParentNodeId());
-        Node newNode2 = createNewNode(node.isLeaf(), node.getParentNodeId());
+        // Create new nodes
+        Node newNode1 = createNewNode(node.isLeaf(), node.getBlockId());
+        Node newNode2 = createNewNode(node.isLeaf(), node.getBlockId());
         newNode1.getEntries().addAll(group1);
         newNode2.getEntries().addAll(group2);
 
         if (node == root) {
-            // Handle root split
-            Node newRoot = createNewNode(false, -1); // New root has no parent
+            // Create new root
+            Node newRoot = createNewNode(false, -1);
             newRoot.addEntry(createEntryForNode(newNode1));
             newRoot.addEntry(createEntryForNode(newNode2));
 
-            // Update children's parent references
+            // Update parent references
             newNode1.setParentNodeId(newRoot.getBlockId());
             newNode2.setParentNodeId(newRoot.getBlockId());
 
+            // Update tree state
             root = newRoot;
+            IndexFileHandler.setRootBlockId(newRoot.getBlockId());
+            IndexFileHandler.setTreeHeight(IndexFileHandler.getTreeHeight() + 1);
+            IndexFileHandler.updateMetaDataBlock();
+            IndexFileHandler.updateNode(newRoot, IndexFileHandler.getTreeHeight());
         } else {
-            // Get parent node
+            // Update parent node
             Node parent = IndexFileHandler.readNode(node.getParentNodeId());
 
-            // Remove old entry pointing to original node
+            // Remove old entry
             parent.getEntries().removeIf(e -> e.getBlockId() == node.getBlockId());
 
             // Add new entries
@@ -138,16 +250,15 @@ public class RStarTree {
             newNode1.setParentNodeId(parent.getBlockId());
             newNode2.setParentNodeId(parent.getBlockId());
 
-            // Check if parent needs splitting
+            // Check parent overflow
             if (parent.getEntries().size() > maxEntries) {
-                splitNode(parent);
+                overflowTreatment(parent, parent.getEntries(), currentLevel - 1);
             }
         }
 
-        // Update storage (would call IndexFileHandler in real implementation)
-//        updateNodeInStorage(parent);
-//        updateNodeInStorage(newNode1);
-//        updateNodeInStorage(newNode2);
+        // Persist changes
+        IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());
+        IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());
     }
 
     /**
@@ -252,8 +363,9 @@ public class RStarTree {
      */
     private Node createNewNode(boolean isLeaf, long parentNodeId) {
         long blockId = nextBlockId++;
+        //System.out.println("blockId="+blockId+" parentId="+parentNodeId);
         Node node = new Node(new ArrayList<>(), isLeaf, blockId, parentNodeId);
-        // Placeholder: Save node to index file using IndexFileHandler
+        IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight()); // Persist immediately
         return node;
     }
 
@@ -262,6 +374,8 @@ public class RStarTree {
      */
     private Entry createEntryForNode(Node node) {
         Rectangle mbr = computeMBR(node.getEntries());
-        return new Entry(mbr, node.getBlockId(), 1, node.isLeaf());
+        Entry entry = new Entry(mbr, node.getBlockId(), node.isLeaf());
+        IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight()); // Update node after creating entry
+        return entry;
     }
 }
