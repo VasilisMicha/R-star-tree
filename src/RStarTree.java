@@ -6,10 +6,11 @@ import java.util.Comparator;
 
 public class RStarTree {
     private Node root;
-    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 340;
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
     private int currentLevel;
+    private Set<Integer> reinsertedLevels = new HashSet<>();
     private final double REINSERT_P = 0.3;
 
     public RStarTree() {
@@ -19,15 +20,13 @@ public class RStarTree {
         IndexFileHandler.updateNode(root, 1); // Persist root node
     }
 
-    public Node getRoot(){
-        return root;
-    }
 
     /**
      * Inserts a new point into the R*-tree
      */
-    public void insert(Point point) {
+     public void insert(Point point) {
         Entry newEntry = new Entry(point.toRectangle(), -1, true);
+        root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node leaf = chooseSubtree(root, newEntry.getRectangle());
         leaf.addEntry(newEntry);
 
@@ -36,6 +35,7 @@ public class RStarTree {
         } else {
             IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight()); // Add this
         }
+        root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         adjustTree(leaf);
     }
 
@@ -59,9 +59,11 @@ public class RStarTree {
 
     private void overflowTreatment(Node N, List<Entry> entries, int level) {
         // OT1: Reinsert or Split
-        if (level != 0 && currentLevel == level) {
+        if (level < currentLevel) {
+            System.out.println("reinsert");
             reinsert(N, entries);
         } else {
+            System.out.println("split");
             split(N, entries);
         }
     }
@@ -92,11 +94,12 @@ public class RStarTree {
 
     private int getCurrentLevel(Node node) {
         int level = 0;
-        while (node.getBlockId() != IndexFileHandler.getRootBlockId() && node != null) {
+        Node current = node;
+        while (current != null && current.getParentNodeId() != -1) {
             level++;
-            node = IndexFileHandler.readNode(node.getParentNodeId());
+            current = IndexFileHandler.readNode(current.getParentNodeId());
         }
-        return level;
+        return ++level;
     }
 
     private void adjustTree(Node node) {
@@ -216,10 +219,13 @@ public class RStarTree {
         // Create new nodes
         Node newNode1 = createNewNode(node.isLeaf(), node.getBlockId());
         Node newNode2 = createNewNode(node.isLeaf(), node.getBlockId());
+
         newNode1.getEntries().addAll(group1);
         newNode2.getEntries().addAll(group2);
 
-        if (node == root) {
+        System.out.println("node that is getting split: "+node.getBlockId());
+        if (node.getBlockId() == IndexFileHandler.getRootBlockId()) {
+            System.out.println("root");
             // Create new root
             Node newRoot = createNewNode(false, -1);
             newRoot.addEntry(createEntryForNode(newNode1));
@@ -233,9 +239,16 @@ public class RStarTree {
             root = newRoot;
             IndexFileHandler.setRootBlockId(newRoot.getBlockId());
             IndexFileHandler.setTreeHeight(IndexFileHandler.getTreeHeight() + 1);
+
             IndexFileHandler.updateMetaDataBlock();
+
+            node.getEntries().clear();
+            IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
             IndexFileHandler.updateNode(newRoot, IndexFileHandler.getTreeHeight());
+
+            currentLevel = (int) IndexFileHandler.getTreeHeight() - 1;
         } else {
+            System.out.println("not root");
             // Update parent node
             Node parent = IndexFileHandler.readNode(node.getParentNodeId());
 
@@ -246,14 +259,16 @@ public class RStarTree {
             parent.addEntry(createEntryForNode(newNode1));
             parent.addEntry(createEntryForNode(newNode2));
 
-            // Update parent references
-            newNode1.setParentNodeId(parent.getBlockId());
-            newNode2.setParentNodeId(parent.getBlockId());
-
-            // Check parent overflow
-            if (parent.getEntries().size() > maxEntries) {
-                overflowTreatment(parent, parent.getEntries(), currentLevel - 1);
+            if (parent.getEntries().size() > maxEntries){
+                overflowTreatment(parent, new ArrayList<>(parent.getEntries()), getCurrentLevel(parent));
+            } else {
+                newNode1.setParentNodeId(parent.getBlockId());
+                newNode2.setParentNodeId(parent.getBlockId());
             }
+
+            node.getEntries().clear();
+            IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
+            IndexFileHandler.updateNode(parent, IndexFileHandler.getTreeHeight());
         }
 
         // Persist changes
@@ -363,7 +378,6 @@ public class RStarTree {
      */
     private Node createNewNode(boolean isLeaf, long parentNodeId) {
         long blockId = nextBlockId++;
-        //System.out.println("blockId="+blockId+" parentId="+parentNodeId);
         Node node = new Node(new ArrayList<>(), isLeaf, blockId, parentNodeId);
         IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight()); // Persist immediately
         return node;

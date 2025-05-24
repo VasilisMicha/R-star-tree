@@ -31,10 +31,6 @@ public class IndexFileHandler {
         return rootBlockId;
     }
 
-    public static long getDataDimensions(){
-        return dataDimensions;
-    }
-
     // Calculates the total blocks in the indexFile
     // Reads the data from the CSV files and adds it to the indexFile
     static void initializeIndexFile(int dimensions, boolean makeNewIndexFile) {
@@ -116,7 +112,6 @@ public class IndexFileHandler {
             raf.seek(blockId*BLOCK_SIZE);
             byte[] node = new byte[BLOCK_SIZE];
             int size = bis.read(node,0,BLOCK_SIZE);
-            System.out.println(size);
             if (size != BLOCK_SIZE)
                 throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
 
@@ -142,7 +137,7 @@ public class IndexFileHandler {
             byte[] goodPutLengthInBytes = DataFileHandler.serialize(nodeInBytes.length);
             byte[] block = new byte[BLOCK_SIZE];
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
-            System.out.println(node.getEntries().size());
+            System.out.println("blockId: "+node.getBlockId()+" parentId: "+node.getParentNodeId()+" entries: "+node.getEntries().size());
             System.arraycopy(nodeInBytes, 0, block, goodPutLengthInBytes.length, nodeInBytes.length);
 
             RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
