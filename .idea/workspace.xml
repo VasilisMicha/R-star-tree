@@ -4,22 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates.">
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Entry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/InternalNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LeafEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/LeafNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Node.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/QueryDimensions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Add R*-Tree implementation with range query support&#10;&#10;Introduced core classes for R*-Tree functionality, including `Node`, `LeafNode`, and `InternalNode`, to support spatial indexing and querying. Added range query methods for filtering points based on multidimensional constraints. Updated `DataParser` and `Point` classes to integrate with the new tree structure and handle dynamic coordinate extraction.">
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Skyline_BNL_Query.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/RangeQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/DataParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/DataParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/src/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/Point.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +21,33 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/DataParser" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;athinaanv&quot;,
+      &quot;author&quot;: &quot;VasilisMicha&quot;
+    }
+  ],
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;athinaanv&quot;
+    &quot;assignee&quot;: &quot;athinaanv&quot;,
+    &quot;author&quot;: &quot;VasilisMicha&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
@@ -134,7 +142,9 @@
       <workItem from="1745602476067" duration="9501000" />
       <workItem from="1745674740896" duration="5496000" />
       <workItem from="1746087563596" duration="5453000" />
-      <workItem from="1746101050584" duration="4635000" />
+      <workItem from="1746101050584" duration="6065000" />
+      <workItem from="1748187318064" duration="1061000" />
+      <workItem from="1748192755175" duration="5158000" />
     </task>
     <task id="LOCAL-00001" summary="add DataParser">
       <option name="closed" value="true" />
@@ -160,15 +170,60 @@
       <option name="project" value="LOCAL" />
       <updated>1745427160024</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add R*-Tree implementation with range query support&#10;&#10;Introduced core classes for R*-Tree functionality, including `Node`, `LeafNode`, and `InternalNode`, to support spatial indexing and querying. Added range query methods for filtering points based on multidimensional constraints. Updated `DataParser` and `Point` classes to integrate with the new tree structure and handle dynamic coordinate extraction.">
+      <option name="closed" value="true" />
+      <created>1746106461533</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746106461533</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="4c8664e8-319b-4824-82e7-d8c632751b14" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/DataParser" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="4c8664e8-319b-4824-82e7-d8c632751b14">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/DataParser" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -182,7 +237,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/r-star-tree" />
+                        <option value="origin/DataParser" />
                       </list>
                     </value>
                   </entry>
@@ -199,6 +254,7 @@
     <MESSAGE value="." />
     <MESSAGE value="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation." />
     <MESSAGE value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
+    <MESSAGE value="Add R*-Tree implementation with range query support&#10;&#10;Introduced core classes for R*-Tree functionality, including `Node`, `LeafNode`, and `InternalNode`, to support spatial indexing and querying. Added range query methods for filtering points based on multidimensional constraints. Updated `DataParser` and `Point` classes to integrate with the new tree structure and handle dynamic coordinate extraction." />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
