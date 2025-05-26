@@ -6,6 +6,7 @@ public class Node implements Serializable {
     private final boolean isLeaf;
     private final long blockId;
     private long parentNodeId;  // Added parent reference
+    private boolean isPartOfTheTree = true;
 
     public Node(List<Entry> entries, boolean isLeaf, long blockId) {
         this(entries, isLeaf, blockId, -1); // -1 means no parent (root)
@@ -22,7 +23,9 @@ public class Node implements Serializable {
     public boolean isLeaf() { return isLeaf; }
     public long getBlockId() { return blockId; }
     public long getParentNodeId() { return parentNodeId; }
+    public boolean getIsPartOfTheTree() { return isPartOfTheTree; }
     public void setParentNodeId(long parentNodeId) { this.parentNodeId = parentNodeId; }
+    public void setIsPartOfTheTree(boolean isPartOfTheTree) { this.isPartOfTheTree = isPartOfTheTree; }
     public void addEntry(Entry entry) {
         entries.add(entry);
     }

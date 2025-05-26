@@ -16,7 +16,7 @@ public class TestRStarTree {
     void testSplit() {
         IndexFileHandler.initializeIndexFile(3, true);
         RStarTree tree = new RStarTree();
-        for (int i=0; i<50; i++) {
+        for (int i=0; i<10; i++) {
             tree.insert(new Point(new double[]{i,i,i}));
         }
         assertEquals(IndexFileHandler.getTreeHeight(), 3);

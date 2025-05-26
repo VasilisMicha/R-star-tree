@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RStarTree {
-    private Node root;
-    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 361;
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 360;
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
     private int currentLevel;
@@ -14,10 +13,10 @@ public class RStarTree {
     private final double REINSERT_P = 0.3;
 
     public RStarTree() {
-        this.root = new Node(new ArrayList<>(), true, nextBlockId++);
-        IndexFileHandler.setRootBlockId((int) root.getBlockId());
+        IndexFileHandler.setRootBlockId(1);
         IndexFileHandler.setTreeHeight(1);
-        IndexFileHandler.updateNode(root, 1); // Persist root node
+        IndexFileHandler.updateMetaDataBlock();
+        createNewNode(true, -1); //creating node
     }
 
 
@@ -26,8 +25,10 @@ public class RStarTree {
      */
      public void insert(Point point) {
         Entry newEntry = new Entry(point.toRectangle(), -1, true);
-        root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+
+        Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node leaf = chooseSubtree(root, newEntry.getRectangle());
+
         leaf.addEntry(newEntry);
 
         if (leaf.getEntries().size() > maxEntries) {
@@ -35,12 +36,12 @@ public class RStarTree {
         } else {
             IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight()); // Add this
         }
-        root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         adjustTree(leaf);
     }
 
     private void Insert(Entry E, int level) {
         // I1: ChooseSubtree
+        Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node N = chooseSubtree(root, E.getRectangle());
 
         // I2: Overflow check
@@ -58,6 +59,7 @@ public class RStarTree {
     }
 
     private void overflowTreatment(Node N, List<Entry> entries, int level) {
+         System.out.println("oveflow");
         // OT1: Reinsert or Split
         if (level < currentLevel) {
             reinsert(N, entries);
@@ -118,6 +120,7 @@ public class RStarTree {
         if (!node.isLeaf()) {
             for (Entry entry : node.getEntries()) {
                 Node child = IndexFileHandler.readNode(entry.getBlockId());
+                System.out.println(child.getBlockId()+": "+child.getEntries().size());
                 Rectangle newMBR = computeMBR(child.getEntries());
                 if (!newMBR.equals(entry.getRectangle())) {
                     entry.setRectangle(newMBR);
@@ -133,7 +136,6 @@ public class RStarTree {
      */
     private Node chooseSubtree(Node node, Rectangle newRect) {
         Node current = node;
-
         while (true) {
             if (current.isLeaf()) {
                 return current;
@@ -204,6 +206,8 @@ public class RStarTree {
      */
     private void split(Node node, List<Entry> allEntries) {
         System.out.println("split");
+        node.setIsPartOfTheTree(false);
+        IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
         // S1: ChooseSplitAxis
         int splitAxis = chooseSplitAxis(allEntries);
 
@@ -219,28 +223,16 @@ public class RStarTree {
         Node newNode1 = createNewNode(node.isLeaf(), node.getParentNodeId());
         Node newNode2 = createNewNode(node.isLeaf(), node.getParentNodeId());
 
-        for (Entry e1 : group1){
-            if (e1.getBlockId() != -1) {
-                Node node1 = IndexFileHandler.readNode(e1.getBlockId());
-                node1.setParentNodeId(newNode1.getBlockId());
-                IndexFileHandler.updateNode(node1, IndexFileHandler.getTreeHeight());
-            }
-        }
-
-        for (Entry e2 : group2){
-            if (e2.getBlockId() != -1) {
-                Node node2 = IndexFileHandler.readNode(e2.getBlockId());
-                node2.setParentNodeId(newNode2.getBlockId());
-                IndexFileHandler.updateNode(node2, IndexFileHandler.getTreeHeight());
-            }
-        }
-
         newNode1.getEntries().addAll(group1);
         newNode2.getEntries().addAll(group2);
 
+        IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());
+        IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());
+
+        Node newRoot = null;
         if (node.getBlockId() == IndexFileHandler.getRootBlockId()) {
             // Create new root
-            Node newRoot = createNewNode(false, -1);
+            newRoot = createNewNode(false, -1);
             newRoot.addEntry(createEntryForNode(newNode1));
             newRoot.addEntry(createEntryForNode(newNode2));
 
@@ -249,16 +241,10 @@ public class RStarTree {
             newNode2.setParentNodeId(newRoot.getBlockId());
 
             // Update tree state
-            root = newRoot;
             IndexFileHandler.setRootBlockId(newRoot.getBlockId());
             IndexFileHandler.setTreeHeight(IndexFileHandler.getTreeHeight() + 1);
 
             IndexFileHandler.updateMetaDataBlock();
-
-            node.getEntries().clear();
-            IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
-            IndexFileHandler.updateNode(newRoot, IndexFileHandler.getTreeHeight());
-
             currentLevel = (int) IndexFileHandler.getTreeHeight() - 1;
         } else {
             // Update parent node
@@ -274,15 +260,32 @@ public class RStarTree {
             if (parent.getEntries().size() > maxEntries) {
                 overflowTreatment(parent, new ArrayList<>(parent.getEntries()), getCurrentLevel(parent));
             }
-
-            node.getEntries().clear();
-            IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
             IndexFileHandler.updateNode(parent, IndexFileHandler.getTreeHeight());
         }
+        updateChildParentReferences(newNode1);
+        updateChildParentReferences(newNode2);
 
         // Persist changes
-        IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());
-        IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());
+        IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());  // Added
+        IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());  // Added
+        if (newRoot != null) {
+            IndexFileHandler.updateNode(newRoot, IndexFileHandler.getTreeHeight());
+        }
+    }
+
+    private void updateChildParentReferences(Node parentNode) {
+        if (parentNode.isLeaf()) return;
+
+        for (Entry entry : parentNode.getEntries()) {
+            try {
+                Node child = IndexFileHandler.readNode(entry.getBlockId());
+                child.setParentNodeId(parentNode.getBlockId());
+                IndexFileHandler.updateNode(child, IndexFileHandler.getTreeHeight());
+            } catch (Exception e){
+                System.out.println("Couldn't read node with block id "+entry.getBlockId()+", line 283");
+                return;
+            }
+        }
     }
 
     /**
@@ -388,7 +391,7 @@ public class RStarTree {
     private Node createNewNode(boolean isLeaf, long parentNodeId) {
         long blockId = nextBlockId++;
         Node node = new Node(new ArrayList<>(), isLeaf, blockId, parentNodeId);
-        IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight()); // Persist immediately
+        IndexFileHandler.createNode(node); // Persist immediately
         return node;
     }
 
@@ -398,7 +401,6 @@ public class RStarTree {
     private Entry createEntryForNode(Node node) {
         Rectangle mbr = computeMBR(node.getEntries());
         Entry entry = new Entry(mbr, node.getBlockId(), node.isLeaf());
-        IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight()); // Update node after creating entry
         return entry;
     }
 }
