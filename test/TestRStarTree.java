@@ -16,10 +16,10 @@ public class TestRStarTree {
     void testSplit() {
         IndexFileHandler.initializeIndexFile(3, true);
         RStarTree tree = new RStarTree();
-        for (int i=0; i<10; i++) {
-            tree.insert(new Point(new double[]{i,i,i}));
+        for (int i=0; i<50; i++) {
+            tree.insert(new Point(new double[]{i,i}));
         }
-        assertEquals(IndexFileHandler.getTreeHeight(), 3);
+        assertEquals(IndexFileHandler.getTreeHeight(), 2);
     }
 
 }

@@ -9,10 +9,10 @@ public class RStarTree {
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
     private int currentLevel;
-    private Set<Integer> reinsertedLevels = new HashSet<>();
     private final double REINSERT_P = 0.3;
 
     public RStarTree() {
+        System.out.println(maxEntries);
         IndexFileHandler.setRootBlockId(1);
         IndexFileHandler.setTreeHeight(1);
         IndexFileHandler.updateMetaDataBlock();
@@ -59,13 +59,15 @@ public class RStarTree {
     }
 
     private void overflowTreatment(Node N, List<Entry> entries, int level) {
-         System.out.println("oveflow");
         // OT1: Reinsert or Split
-        if (level < currentLevel) {
-            reinsert(N, entries);
-        } else {
-            split(N, entries);
-        }
+//        if (level < currentLevel) {
+//            System.out.println("reinsert");
+//            reinsert(N, entries);
+//        } else {
+//            System.out.println("split");
+//            split(N, entries);
+//        }
+        split(N, entries);
     }
 
     private void reinsert(Node N, List<Entry> entries) {
@@ -120,7 +122,6 @@ public class RStarTree {
         if (!node.isLeaf()) {
             for (Entry entry : node.getEntries()) {
                 Node child = IndexFileHandler.readNode(entry.getBlockId());
-                System.out.println(child.getBlockId()+": "+child.getEntries().size());
                 Rectangle newMBR = computeMBR(child.getEntries());
                 if (!newMBR.equals(entry.getRectangle())) {
                     entry.setRectangle(newMBR);
