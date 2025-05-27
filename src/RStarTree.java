@@ -12,7 +12,6 @@ public class RStarTree {
     private final double REINSERT_P = 0.3;
 
     public RStarTree() {
-        System.out.println(maxEntries);
         IndexFileHandler.setRootBlockId(1);
         IndexFileHandler.setTreeHeight(1);
         IndexFileHandler.updateMetaDataBlock();
@@ -61,10 +60,8 @@ public class RStarTree {
     private void overflowTreatment(Node N, List<Entry> entries, int level) {
         // OT1: Reinsert or Split
 //        if (level < currentLevel) {
-//            System.out.println("reinsert");
 //            reinsert(N, entries);
 //        } else {
-//            System.out.println("split");
 //            split(N, entries);
 //        }
         split(N, entries);
@@ -206,7 +203,6 @@ public class RStarTree {
      * Splits an overflowing node according to R*-tree rules
      */
     private void split(Node node, List<Entry> allEntries) {
-        System.out.println("split");
         node.setIsPartOfTheTree(false);
         IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
         // S1: ChooseSplitAxis
