@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
  * Class that is used to perform a k-nearest neighbours search for a given query point
  * It does not use any indexing structure
  */
-class LinearSearchNearestNeighbours extends LinearSearch{
+class LinearSearchNearestNeighbours extends Query{
     private ArrayList<Double> searchPoint;
     private int k;
     private PriorityQueue<IdDistancePair> nearestNeighbours;
@@ -40,12 +40,24 @@ class LinearSearchNearestNeighbours extends LinearSearch{
         return nearestNeighborIds;
     }
 
+    @Override
+    ArrayList<Long> getResultIds(Node node) {
+        ArrayList<Long> nearestNeighborIds= new ArrayList<>();
+        findNeighbours();
+        while (nearestNeighbours.size() != 0){
+            IdDistancePair recordDistancePair= nearestNeighbours.poll();
+            nearestNeighborIds.add(recordDistancePair.getRecordId());
+        }
+        Collections.reverse(nearestNeighborIds);
+        return nearestNeighborIds;
+    }
+
     /**
      * Finds the nearest neighbours
      */
     private void findNeighbours(){
         int blockId= 1;
-        while(blockId < DataFileHandler.getTotalBlocksInDatafile())
+        while(blockId < DataFileHandler.getDatafileBlockCounter())
         {
             ArrayList<Point> pointsInBlock;
             pointsInBlock = DataFileHandler.readDataFileBlock(blockId);
@@ -54,7 +66,7 @@ class LinearSearchNearestNeighbours extends LinearSearch{
                 for (Point point : pointsInBlock){
                     ArrayList<Bounds> boundsForEachDimension= new ArrayList<>();
                     for (int d=0; d<DataFileHandler.getDataDimensions(); d++){
-                        boundsForEachDimension.add(new Bounds(point.getCoordinate(d), point.getCoordinate(d)));
+                        boundsForEachDimension.add(new Bounds(point.getCoords(d), point.getCoords(d)));
                     }
                     entries.add(new LeafEntry(point.getId(), blockId, boundsForEachDimension));
                 }

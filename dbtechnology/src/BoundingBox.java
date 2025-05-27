@@ -27,7 +27,7 @@ class BoundingBox implements Serializable{
      * Getter
      * @return an ArrayList that has bounds
      */
-    ArrayList<Bounds> getBounds()
+    ArrayList<Bounds> getBounds(){
         return bounds;
     }
 

@@ -1,5 +1,8 @@
+import java.io.File;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.printf("Hello and welcome!");
+        IndexFileHandler.initializeIndexFile(3, true);
+        System.out.println(IndexFileHandler.calculateMaxEntriesInNode());
     }
 }

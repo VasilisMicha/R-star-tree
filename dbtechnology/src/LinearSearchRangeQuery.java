@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Class that is used or performing a range query over a defined bounding box
  * Retrieves records that fall within the specified spatial area, without relying on an index
  */
-class LinearSearchRangeQuery extends LinearSearch{
+class LinearSearchRangeQuery extends Query{
     private ArrayList<Long> qualifyingRecordIds;
     private BoundingBox searchBoundingBox;
 
@@ -20,7 +20,14 @@ class LinearSearchRangeQuery extends LinearSearch{
      * @return the ids of the range query
      */
     @Override
-    ArrayList<Long> getQueryRecordIds() {
+    ArrayList<Long> getResultIds() {
+        qualifyingRecordIds= new ArrayList<>();
+        find();
+        return qualifyingRecordIds;
+    }
+
+    @Override
+    ArrayList<Long> getResultIds(Node node) {
         qualifyingRecordIds= new ArrayList<>();
         find();
         return qualifyingRecordIds;
@@ -31,7 +38,7 @@ class LinearSearchRangeQuery extends LinearSearch{
      */
     private void find(){
         int blockId= 1;
-        while(blockId< DataFileHandler.getTotalBlocksInDatafile()){
+        while(blockId< DataFileHandler.getDatafileBlockCounter()){
             ArrayList<Point> pointsInBlock;
             pointsInBlock= DataFileHandler.readDataFileBlock(blockId);
             ArrayList<LeafEntry> entries= new ArrayList<>();
@@ -39,7 +46,7 @@ class LinearSearchRangeQuery extends LinearSearch{
                 for (Point point : pointsInBlock){
                     ArrayList<Bounds> boundsForEachDimension = new ArrayList<>();
                     for (int d=0; d<DataFileHandler.getDataDimensions(); d++){
-                        boundsForEachDimension.add(new Bounds(point.getCoordinate(d), point.getCoordinate(d)));
+                        boundsForEachDimension.add(new Bounds(point.getCoords(d), point.getCoords(d)));
                     }
                     entries.add(new LeafEntry(point.getId(), blockId, boundsForEachDimension));
                 }

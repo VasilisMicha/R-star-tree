@@ -51,7 +51,7 @@ class IndexFileHandler{
      * @param pathToFile given file path
      * @return an ArrayList<Integer> that includes the values of the metadata file
      */
-    private static ArrayList<Integer> readMetaDataBlock(String pathToFile){
+    static ArrayList<Integer> readMetaDataBlock(String pathToFile){
         try {
             RandomAccessFile randomAccessFile= new RandomAccessFile(new File(pathToFile), "rw");
             FileInputStream fileInputStream= new FileInputStream(randomAccessFile.getFD());
@@ -74,7 +74,7 @@ class IndexFileHandler{
      * Updates the metadata
      * @param pathToFile
      */
-    private static void updateMetaDataBlock(String pathToFile) {
+    public static void updateMetaDataBlock(String pathToFile) {
         try {
             ArrayList<Integer> dataFileMetaData= new ArrayList<>();
             dataFileMetaData.add(dataDimensions);
@@ -196,9 +196,9 @@ class IndexFileHandler{
             file.seek(node.getBlockId()*BLOCK_SIZE);
             file.write(block);
             file.close();
-            if (node.getBlockId() == RStarTree.getRootNodeBlockId() && DataFileHandler.rStarTreeHeight != rStarTreeHeight){
-                updateRStarTreeHeight();
-            }
+            //if (node.getBlockId() == RStarTree.getRootNodeBlockId() && DataFileHandler.rStarTreeHeight != rStarTreeHeight){
+            //    updateRStarTreeHeight();
+            //}
         } catch (Exception e){
             e.printStackTrace();
         }
