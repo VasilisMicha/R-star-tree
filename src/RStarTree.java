@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RStarTree {
-    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 360;
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
     private int currentLevel;
