@@ -1,25 +1,19 @@
-/**
- * This class represents the structural element that connects the nodes of the tree and carries
- * information about the spatial boundaries of the subtrees.
- * @author vasilisMicha, athinaanv
- **/
-
 import java.io.Serializable;
 
-class Entry implements Serializable {
+public class Entry implements Serializable {
     private Rectangle rectangle;
-    private Node child; // direct reference
+    private final long blockId; // if leaf it refers to the block id in datafile, else in refers to the child node
+    private final boolean isLeaf;
 
-    public Entry(Rectangle rectangle, Node child) {
+    public Entry(Rectangle rectangle, long blockId, boolean isLeaf) {
         this.rectangle = rectangle;
-        this.child = child;
+        this.blockId = blockId;
+        this.isLeaf = isLeaf;
     }
 
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
+    public void setRectangle(Rectangle rectangle){ this.rectangle = rectangle;}
+    public Rectangle getRectangle() { return rectangle; }
+    public long getBlockId() { return blockId; }
+    public boolean isLeaf() { return isLeaf; }
 
-    public Node getChild() {
-        return child;
-    }
 }

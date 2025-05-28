@@ -1,23 +1,32 @@
-/**
- * Abstract class representing a node of an R*-Tree (internal/leaf).
- * It contains information about the node's level and the min covering rectangle (MBR).
- * Subclasses define whether they are leaves or internal nodes.
- * @author VasilisMicha, athinaanv
- **/
-
 import java.io.Serializable;
+import java.util.List;
 
-abstract class Node implements Serializable {
-    protected int level;  //0=leaf
-    protected Rectangle mbr; //Min bounding rectangle
+public class Node implements Serializable {
+    private List<Entry> entries;
+    private final boolean isLeaf;
+    private final long blockId;
+    private long parentNodeId;  // Added parent reference
+    private boolean isPartOfTheTree = true;
 
-    public int getLevel() {
-        return level;
+    public Node(List<Entry> entries, boolean isLeaf, long blockId) {
+        this(entries, isLeaf, blockId, -1); // -1 means no parent (root)
     }
 
-    public Rectangle getMBR() {
-        return mbr;
+    public Node(List<Entry> entries, boolean isLeaf, long blockId, long parentNodeId) {
+        this.entries = entries;
+        this.isLeaf = isLeaf;
+        this.blockId = blockId;
+        this.parentNodeId = parentNodeId;
     }
 
-    public abstract boolean isLeaf();
+    public List<Entry> getEntries() { return entries; }
+    public boolean isLeaf() { return isLeaf; }
+    public long getBlockId() { return blockId; }
+    public long getParentNodeId() { return parentNodeId; }
+    public boolean getIsPartOfTheTree() { return isPartOfTheTree; }
+    public void setParentNodeId(long parentNodeId) { this.parentNodeId = parentNodeId; }
+    public void setIsPartOfTheTree(boolean isPartOfTheTree) { this.isPartOfTheTree = isPartOfTheTree; }
+    public void addEntry(Entry entry) {
+        entries.add(entry);
+    }
 }

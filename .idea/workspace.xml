@@ -4,9 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Add R*-Tree implementation with range query support&#10;&#10;Introduced core classes for R*-Tree functionality, including `Node`, `LeafNode`, and `InternalNode`, to support spatial indexing and querying. Added range query methods for filtering points based on multidimensional constraints. Updated `DataParser` and `Point` classes to integrate with the new tree structure and handle dynamic coordinate extraction.">
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Skyline_BNL_Query.java" afterDir="false" />
+    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="Added Block Nested Loop (BNL) algorithm for the skyline query functionality.">
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/RStarTreeRangeQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dbtechnology/src/Skyline_BBS_Query.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Entry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/InternalNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LeafEntry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LeafNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Skyline_BNL_Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Skyline_BNL_Query.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/src/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/src/Point.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +73,13 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/dbtechnology/src/DataParser.java" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/dbtechnology/src/RStarTree.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -144,7 +163,10 @@
       <workItem from="1746087563596" duration="5453000" />
       <workItem from="1746101050584" duration="6065000" />
       <workItem from="1748187318064" duration="1061000" />
-      <workItem from="1748192755175" duration="5158000" />
+      <workItem from="1748192755175" duration="5788000" />
+      <workItem from="1748271168192" duration="9725000" />
+      <workItem from="1748357698502" duration="13975000" />
+      <workItem from="1748433068277" duration="13174000" />
     </task>
     <task id="LOCAL-00001" summary="add DataParser">
       <option name="closed" value="true" />
@@ -178,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746106461533</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added Block Nested Loop (BNL) algorithm for the skyline query functionality.">
+      <option name="closed" value="true" />
+      <created>1748198748417</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1748198748417</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,6 +285,7 @@
     <MESSAGE value="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation." />
     <MESSAGE value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
     <MESSAGE value="Add R*-Tree implementation with range query support&#10;&#10;Introduced core classes for R*-Tree functionality, including `Node`, `LeafNode`, and `InternalNode`, to support spatial indexing and querying. Added range query methods for filtering points based on multidimensional constraints. Updated `DataParser` and `Point` classes to integrate with the new tree structure and handle dynamic coordinate extraction." />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Added Block Nested Loop (BNL) algorithm for the skyline query functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Block Nested Loop (BNL) algorithm for the skyline query functionality." />
   </component>
 </project>

@@ -1,54 +1,120 @@
-/**
- * Represents a multidimensional rectangle (MBR - Minimum Bounding Rectangle).
- * Used to describe spatial boundaries of nodes or points in the R*-Tree.
- * Provides methods for checking intersection and inclusion with other rectangles or points.
- * @author athinaanv
- **/
-
 import java.io.Serializable;
-import java.util.Arrays;
 
-class Rectangle implements Serializable {
+public class Rectangle implements Serializable {
     private final double[] min;
     private final double[] max;
+    private String name;
+    private String id;
+
+    public Rectangle(double[] min, double[] max, String id, String name) {
+        this.min =min.clone();
+        this.max =max.clone();
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId(){ return id; }
+    public String getName(){ return name; }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Min: " + min + ", Max: " + max;
+    }
 
     public Rectangle(double[] min, double[] max) {
-        this.min = min;
-        this.max = max;
+        if (min.length != max.length)
+            throw new IllegalArgumentException("Dimensions mismatch.");
+        this.min = min.clone();
+        this.max = max.clone();
     }
 
-    public double[] getMin() {
-        return min;
+    public Point getCenter() {
+        double[] coords = new double[min.length];
+        for (int i = 0; i < min.length; i++) {
+            coords[i] = (min[i] + max[i]) / 2;
+        }
+        return new Point(coords);
     }
 
-    public double[] getMax() {
-        return max;
+    public double distanceTo(Point p) {
+        double sum = 0;
+        for (int i = 0; i < min.length; i++) {
+            double diff = getCenter().getCoordinates()[i] - p.getCoordinates()[i];
+            sum += diff * diff;
+        }
+        return Math.sqrt(sum);
+    }
+
+    /** Calculates the hypervolume (area in n-D). */
+    public double calculateArea() {
+        double area = 1.0;
+        for (int i = 0; i < min.length; i++) {
+            area *= max[i] - min[i];
+        }
+        return area;
     }
 
     public boolean intersects(Rectangle other) {
         for (int i = 0; i < min.length; i++) {
             if (this.max[i] < other.min[i] || this.min[i] > other.max[i]) {
-                return false;
+                return false; // Δεν υπάρχει επικάλυψη στη διάσταση i
             }
         }
-        return true;
+        return true; // Υπάρχει επικάλυψη σε όλες τις διαστάσεις
     }
 
-    public boolean contains(Point point) {
-        double[] coords = point.getCoordinates();
-        for (int i = 0; i < coords.length; i++) {
+
+    public boolean contains(Point p) {
+        double[] coords = p.getCoordinates();
+        for (int i = 0; i < min.length; i++) {
             if (coords[i] < min[i] || coords[i] > max[i]) {
-                return false;
+                return false; // Το σημείο είναι έξω από τα όρια σε κάποια διάσταση
             }
         }
-        return true;
+        return true; // Το σημείο είναι μέσα στο ορθογώνιο σε όλες τις διαστάσεις
     }
 
-    @Override
-    public String toString() {
-        return "Rectangle{" +
-                "min=" + Arrays.toString(min) +
-                ", max=" + Arrays.toString(max) +
-                '}';
+
+    /** Returns the minimal rectangle enclosing this and another rectangle. */
+    public Rectangle enlarge(Rectangle other) {
+        double[] newMin = new double[min.length];
+        double[] newMax = new double[max.length];
+        for (int i = 0; i < min.length; i++) {
+            newMin[i] = Math.min(min[i], other.min[i]);
+            newMax[i] = Math.max(max[i], other.max[i]);
+        }
+        return new Rectangle(newMin, newMax);
+    }
+
+    /** Calculates the area increase if enlarged to include 'other'. */
+    public double calculateAreaEnlargement(Rectangle other) {
+        return this.enlarge(other).calculateArea() - this.calculateArea();
+    }
+
+    /** Calculates the overlapping hypervolume with another rectangle. */
+    public double calculateOverlap(Rectangle other) {
+        double overlap = 1.0;
+        for (int i = 0; i < min.length; i++) {
+            double maxMin = Math.max(min[i], other.min[i]);
+            double minMax = Math.min(max[i], other.max[i]);
+            if (maxMin >= minMax) return 0.0;
+            overlap *= (minMax - maxMin);
+        }
+        return overlap;
+    }
+
+    public double calculateMargin() {
+        double margin = 0.0;
+        for (int i = 0; i < min.length; i++) {
+            margin += (max[i] - min[i]);
+        }
+        return margin;
+    }
+
+    public double[] getMin() { return min.clone(); }
+    public double[] getMax() { return max.clone(); }
+
+    public boolean contains(double[] coords) {
+  return contains(new Point(coords));
     }
 }

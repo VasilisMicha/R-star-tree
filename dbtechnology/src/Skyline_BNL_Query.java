@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Skyline_BNL_Query {
-
     public static List<Point> computeSkyline(List<Point> points) {
         List<Point> skyline = new ArrayList<>(); //Skyline results
 
