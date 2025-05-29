@@ -3,6 +3,18 @@ import java.io.Serializable;
 public class Rectangle implements Serializable {
     private final double[] min;
     private final double[] max;
+    private String name;
+    private String id;
+
+    public Rectangle(double[] min, double[] max, String id, String name) {
+        this.min =min.clone();
+        this.max =max.clone();
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId(){ return id; }
+    public String getName(){ return name; }
 
     public Rectangle(double[] min, double[] max) {
         if (min.length != max.length)
@@ -22,7 +34,7 @@ public class Rectangle implements Serializable {
     public double distanceTo(Point p) {
         double sum = 0;
         for (int i = 0; i < min.length; i++) {
-            double diff = getCenter().getCoords()[i] - p.getCoords()[i];
+            double diff = getCenter().getCoordinates()[i] - p.getCoordinates()[i];
             sum += diff * diff;
         }
         return Math.sqrt(sum);
@@ -75,4 +87,18 @@ public class Rectangle implements Serializable {
 
     public double[] getMin() { return min.clone(); }
     public double[] getMax() { return max.clone(); }
+
+    public double minDistanceTo(Point p) {
+        double sum = 0.0;
+        for (int i = 0; i < min.length; i++) {
+            double coord = p.getCoordinates()[i];
+            if (coord < min[i]) {
+                sum += Math.pow(min[i] - coord, 2);
+            } else if (coord > max[i]) {
+                sum += Math.pow(coord - max[i], 2);
+            }
+            // else coord is within bounds on this dimension
+        }
+        return Math.sqrt(sum);
+    }
 }

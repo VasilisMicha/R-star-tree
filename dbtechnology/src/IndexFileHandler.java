@@ -1,232 +1,228 @@
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-/**
- * Class that is used for various tasks in the datafile and indexfile such as saving and updating
- * It also stores metadata information (file paths, block sizes and other)
- */
-class IndexFileHandler{
-    private static final int BLOCK_SIZE= 32*1024; // Each Block is 32KB
-    static final String PathToDatafile= "datafile.dat";
-    private static final String PathToIndexfile= "indexfile.dat";
-    private static int dataDimensions;
-    private static int datafileBlockCounter;
-    private static int indexfileBlockCounter;
-    private static int rStarTreeHeight;
+public class IndexFileHandler {
 
-    static int getIndexfileBlockCounter() { return indexfileBlockCounter; }
-    static int getRStarTreeHeight() { return rStarTreeHeight; }
+    private static final int BLOCK_SIZE = 32 * 1024; // 32 KB = 32 * 1024 bytes
+    private static final String PATH_TO_FILE = "src//indexfile.dat";
+    private static long rootBlockId;
+    private static long dataDimensions;
+    private static long treeHeight;
 
-    /**
-     * It is used for serializing an Object to byte array
-     * @param obj an Object
-     * @return a byte array
-     * @throws IOException
-     */
-    private static byte[] serialize(Object obj) throws IOException{
-        ByteArrayOutputStream out= new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream= new ObjectOutputStream(out);
-        objectOutputStream.writeObject(obj);
-        return out.toByteArray();
+    public static synchronized void setTreeHeight(long height) {
+        treeHeight = height;
+        updateMetaDataBlock();
     }
 
-    /**
-     * It is used to deserialize a byte array to an Object
-     * @param data a byte array
-     * @return an Object
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    private static Object deserialize(byte[] data) throws IOException, ClassNotFoundException{
-        ByteArrayInputStream in= new ByteArrayInputStream(data);
-        ObjectInputStream objectInputStream= new ObjectInputStream(in);
-        return objectInputStream.readObject();
+    public static long getTreeHeight() {
+        return treeHeight;
     }
 
-    /**
-     * Reads the metadata from the file path
-     * @param pathToFile given file path
-     * @return an ArrayList<Integer> that includes the values of the metadata file
-     */
-    static ArrayList<Integer> readMetaDataBlock(String pathToFile){
+    // Modified to handle root updates atomically
+    public static synchronized void setRootBlockId(long id) {
+        rootBlockId = id;
+        updateMetaDataBlock(); // Persist immediately
+    }
+
+    public static long getRootBlockId(){
+        return rootBlockId;
+    }
+
+    // Calculates the total blocks in the indexFile
+    // Reads the data from the CSV files and adds it to the indexFile
+    static void initializeIndexFile(int dimensions, boolean makeNewIndexFile) {
         try {
-            RandomAccessFile randomAccessFile= new RandomAccessFile(new File(pathToFile), "rw");
-            FileInputStream fileInputStream= new FileInputStream(randomAccessFile.getFD());
-            BufferedInputStream bufferedInputStream= new BufferedInputStream(fileInputStream);
-            byte[] block= new byte[BLOCK_SIZE];
-            if (bufferedInputStream.read(block,0,BLOCK_SIZE) != BLOCK_SIZE)
-                throw new IllegalStateException("Wrong Block size read");
-            byte[] dataSizeBytes= serialize(new Random().nextInt());
-            System.arraycopy(block, 0, dataSizeBytes, 0, dataSizeBytes.length);
-            byte[] dataInBlock= new byte[(Integer)deserialize(dataSizeBytes)];
-            System.arraycopy(block, dataSizeBytes.length, dataInBlock, 0, dataInBlock.length);
-            return (ArrayList<Integer>)deserialize(dataInBlock);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * Updates the metadata
-     * @param pathToFile
-     */
-    public static void updateMetaDataBlock(String pathToFile) {
-        try {
-            ArrayList<Integer> dataFileMetaData= new ArrayList<>();
-            dataFileMetaData.add(dataDimensions);
-            dataFileMetaData.add(BLOCK_SIZE);
-            if (pathToFile.equals(PathToDatafile))
-                dataFileMetaData.add(++datafileBlockCounter);
-            else if (pathToFile.equals(PathToIndexfile)){
-                dataFileMetaData.add(++indexfileBlockCounter);
-                dataFileMetaData.add(rStarTreeHeight);
+            // Checks if an indexFile already exists, initialise the metaData from the metadata block (block 0 of the file)
+            if (!makeNewIndexFile && Files.exists(Paths.get(PATH_TO_FILE))) {
+                ArrayList<Long> metadata = readMetaDataBlock();
+                if (metadata != null && metadata.size() >= 3) {
+                    dataDimensions = metadata.get(0);
+                    rootBlockId = metadata.get(1); // Read saved root ID
+                    treeHeight = metadata.get(2);
+                }
             }
-            byte[] metaDataInBytes= serialize(dataFileMetaData);
-            byte[] dataSizeBytes= serialize(metaDataInBytes.length);
+            // Else if not exists or a new one is to be made, initialize a new indexFile
+            else {
+                Files.deleteIfExists(Paths.get(PATH_TO_FILE)); // Resetting/Deleting index file data
+                dataDimensions = dimensions;
+                if (dataDimensions <= 0)
+                    throw new IllegalStateException("The number of data dimensions must be a positive integer");
+                rootBlockId = -1;
+                updateMetaDataBlock();
+            }
+        } catch(Exception e){e.printStackTrace();}
+    }
+
+    // Reads the data from the given file path
+    // Reads the Block 0, which is used for the metadata
+    // Returns an ArrayList<Integer> which includes the values for the metadata in the given file
+    // Updates the metadata on the given file path
+    // Saves the current dataDimensions, the block size and the new total blocks on the block 0 of the file
+
+    public static ArrayList<Long> readMetaDataBlock() {
+        try (RandomAccessFile raf = new RandomAccessFile(PATH_TO_FILE, "rw")) {
             byte[] block = new byte[BLOCK_SIZE];
-            System.arraycopy(dataSizeBytes, 0, block, 0, dataSizeBytes.length);
-            System.arraycopy(metaDataInBytes, 0, block, dataSizeBytes.length, metaDataInBytes.length);
-            RandomAccessFile f = new RandomAccessFile(new File(pathToFile), "rw");
+            raf.seek(0);
+            raf.readFully(block);
+
+            // Read metadata length (first 4 bytes)
+            byte[] lengthBytes = new byte[4];
+            System.arraycopy(block, 0, lengthBytes, 0, 4);
+            int metaDataLength = (int) DataFileHandler.deserialize(lengthBytes);
+
+            // Read metadata
+            byte[] metaDataBytes = new byte[metaDataLength];
+            System.arraycopy(block, 4, metaDataBytes, 0, metaDataLength);
+            return (ArrayList<Long>) DataFileHandler.deserialize(metaDataBytes);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read metadata", e);
+        }
+    }
+
+    public static void updateMetaDataBlock() {
+        try {
+            ArrayList<Long> dataFileMetaData = new ArrayList<>();
+            dataFileMetaData.add(dataDimensions);
+            dataFileMetaData.add(rootBlockId);
+            dataFileMetaData.add(treeHeight);
+            byte[] metaDataInBytes = DataFileHandler.serialize(dataFileMetaData);
+            byte[] goodPutLengthInBytes = DataFileHandler.serialize(metaDataInBytes.length);
+            byte[] block = new byte[BLOCK_SIZE];
+            System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
+            System.arraycopy(metaDataInBytes, 0, block, goodPutLengthInBytes.length, metaDataInBytes.length);
+
+            RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
             f.write(block);
             f.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Updates block 0 with any change that happened
-     */
-    private static void updateRStarTreeHeight(){
-        try {
-            ArrayList<Integer> dataFileMetaData= new ArrayList<>();
-            dataFileMetaData.add(dataDimensions);
-            dataFileMetaData.add(BLOCK_SIZE);
-            dataFileMetaData.add(indexfileBlockCounter);
-            dataFileMetaData.add(++rStarTreeHeight);
-            byte[] metaDataInBytes = serialize(dataFileMetaData);
-            byte[] dataSizeBytes = serialize(metaDataInBytes.length);
-            byte[] block = new byte[BLOCK_SIZE];
-            System.arraycopy(dataSizeBytes, 0, block, 0, dataSizeBytes.length);
-            System.arraycopy(metaDataInBytes, 0, block, dataSizeBytes.length, metaDataInBytes.length);
-            RandomAccessFile file = new RandomAccessFile(new File(PathToIndexfile), "rw");
-            file.write(block);
-            file.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Calculates the total blocks in the indexFile and updates it with the data from the csv files
-     * @param dataDimensions
-     * @param makeNewDataFile
-     */
-    static void initializeIndexFile(int dataDimensions, boolean makeNewDataFile){
-        try{
-            //if indexfile exists
-            if (!makeNewDataFile && Files.exists(Paths.get(PathToIndexfile))){
-                ArrayList<Integer> indexFileMetaData= readMetaDataBlock(PathToIndexfile);
-                if (indexFileMetaData == null) {
-                    throw new IllegalStateException("Could not read datafile's Meta Data Block");
-                }
-                DataFileHandler.dataDimensions= indexFileMetaData.get(0);
-                if (DataFileHandler.dataDimensions<= 0){
-                    throw new IllegalStateException("Data dimensions must be a positive number");
-                }
-                if (indexFileMetaData.get(1) != BLOCK_SIZE){
-                    throw new IllegalStateException("Wrong Block size read");
-                }
-                indexfileBlockCounter = indexFileMetaData.get(2);
-                if (indexfileBlockCounter< 0){
-                    throw new IllegalStateException("Total blocks in index file must be a positive number");
-                }
-                rStarTreeHeight = indexFileMetaData.get(3);
-                if (rStarTreeHeight< 0){
-                    throw new IllegalStateException("Index's tree height must be a positive number");
-                }
-            }else{ // if indexfile does not exist
-                Files.deleteIfExists(Paths.get(PathToIndexfile));
-                DataFileHandler.dataDimensions= dataDimensions;
-                rStarTreeHeight = 1;
-                if (DataFileHandler.dataDimensions<= 0)
-                    throw new IllegalStateException("The number of data dimensions must be a positive integer");
-                updateMetaDataBlock(PathToIndexfile);
-            }
-        }catch(Exception e){e.printStackTrace();}
-    }
-
-    /**
-     * Writes and saves the given array of pooints and id as a new block of bytes in the indexFile
-     * @param node
-     */
-    static void writeNewIndexFileBlock(Node node) {
-        try {
-            byte[] nodeInBytes = serialize(node);
-            byte[] dataSizeBytes = serialize(nodeInBytes.length);
-            byte[] block = new byte[BLOCK_SIZE];
-            System.arraycopy(dataSizeBytes, 0, block, 0, dataSizeBytes.length);
-            System.arraycopy(nodeInBytes, 0, block, dataSizeBytes.length, nodeInBytes.length);
-            FileOutputStream fileOutputStream = new FileOutputStream(PathToIndexfile,true);
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-            bufferedOutputStream.write(block);
-            updateMetaDataBlock(PathToIndexfile);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Updates an existing block in indexfile with new data from a modified R*-tree Node.
-     * @param node the new node
-     * @param rStarTreeHeight
-     */
-    static void updateIndexFileBlock(Node node, int rStarTreeHeight) {
+    public static void createNode(Node node) {
         try {
-            byte[] nodeInBytes = serialize(node);
-            byte[] dataSizeBytes = serialize(nodeInBytes.length);
+            byte[] nodeInBytes = DataFileHandler.serialize(node);
+            byte[] goodPutLengthInBytes = DataFileHandler.serialize(nodeInBytes.length);
             byte[] block = new byte[BLOCK_SIZE];
-            System.arraycopy(dataSizeBytes, 0, block, 0, dataSizeBytes.length);
-            System.arraycopy(nodeInBytes, 0, block, dataSizeBytes.length, nodeInBytes.length);
-            RandomAccessFile file = new RandomAccessFile(new File(PathToIndexfile), "rw");
-            file.seek(node.getBlockId()*BLOCK_SIZE);
-            file.write(block);
-            file.close();
-            //if (node.getBlockId() == RStarTree.getRootNodeBlockId() && DataFileHandler.rStarTreeHeight != rStarTreeHeight){
-            //    updateRStarTreeHeight();
-            //}
-        } catch (Exception e){
+            System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
+            System.arraycopy(nodeInBytes, 0, block, goodPutLengthInBytes.length, nodeInBytes.length);
+            System.out.println("Create: blockId: "+node.getBlockId()+" parentId: "+node.getParentNodeId()+" entries: "+node.getEntries().size());
+            FileOutputStream fos = new FileOutputStream(PATH_TO_FILE,true);
+            BufferedOutputStream bout = new BufferedOutputStream(fos);
+            bout.write(block);
+            updateMetaDataBlock();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Reads a node from R* tree based on the blockId
-     * @param blockId which block a node is from
-     * @return the node or null if it doesn't exist
-     */
-    static Node readIndexFileBlock(long blockId){
-        try {
-            RandomAccessFile randomAccessFile = new RandomAccessFile(new File(PathToIndexfile), "rw");
-            FileInputStream fileInputStream = new FileInputStream(randomAccessFile.getFD());
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-            randomAccessFile.seek(blockId*BLOCK_SIZE);
-            byte[] block = new byte[BLOCK_SIZE];
-            if (bufferedInputStream.read(block,0,BLOCK_SIZE) != BLOCK_SIZE) {
-                throw new IllegalStateException("Wrong Block size read");
-            }
-            byte[] dataSizeBytes= serialize(new Random().nextInt());
-            System.arraycopy(block, 0, dataSizeBytes, 0, dataSizeBytes.length);
-            byte[] nodeInBytes = new byte[(Integer)deserialize(dataSizeBytes)];
-            System.arraycopy(block, dataSizeBytes.length, nodeInBytes, 0, nodeInBytes.length);
-            return (Node)deserialize(nodeInBytes);
-        } catch (Exception e){
+    public static Node readNode(long blockId) {
+        try (RandomAccessFile raf = new RandomAccessFile(PATH_TO_FILE, "rws")) {
+            FileInputStream fis = new FileInputStream(raf.getFD());
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            raf.seek(blockId*BLOCK_SIZE);
+            byte[] node = new byte[BLOCK_SIZE];
+            int size = bis.read(node,0,BLOCK_SIZE);
+            if (size != BLOCK_SIZE)
+                throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
+            byte[] sizeOfData = DataFileHandler.serialize(new Random().nextInt()); // the amount of data in bytes stored in the node
+            System.arraycopy(node, 0, sizeOfData, 0, sizeOfData.length);
+            byte[] nodeInBytes = new byte[(Integer)DataFileHandler.deserialize(sizeOfData)];
+            System.arraycopy(node, sizeOfData.length, nodeInBytes, 0, nodeInBytes.length);
+
+            return (Node)DataFileHandler.deserialize(nodeInBytes);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    // Updates the indexFile block with the corresponding given already saved Node
+    // In case node's block id is the root's and the given parameter totalLevelsOfTreeIndex is changed during the tree's changes then
+    // the totalLevelsOfTreeIndex variable's value is increased by one
+    public static void updateNode(Node node, long totalLevelsOfTreeIndex) {
+        if (node.getParentNodeId() != -1) {
+            Node parent = readNode(node.getParentNodeId());
+            if (!parent.getIsPartOfTheTree()) return;
+        }
+
+        try {
+            byte[] nodeInBytes = DataFileHandler.serialize(node);
+            byte[] goodPutLengthInBytes = DataFileHandler.serialize(nodeInBytes.length);
+            byte[] block = new byte[BLOCK_SIZE];
+            System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
+            System.out.println("Update: blockId: "+node.getBlockId()+" parentId: "+node.getParentNodeId()+" entries: "+node.getEntries().size());
+            System.arraycopy(nodeInBytes, 0, block, goodPutLengthInBytes.length, nodeInBytes.length);
+
+            RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
+            f.seek(node.getBlockId()*BLOCK_SIZE); // this basically reads n bytes in the file
+            f.write(block);
+            f.close();
+
+            if (node.getBlockId() == rootBlockId && treeHeight != totalLevelsOfTreeIndex)
+                updateLevelsOfTreeInIndexFile();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Updates the metadata block with an increased level of tree index in the indexFile
+    // Saves the current dataDimensions, the block size, the total blocks on the block 0 and the new increased totalLevelsOfTreeIndex
+    private static void updateLevelsOfTreeInIndexFile()
+    {
+        try {
+            ArrayList<Long> dataFileMetaData = new ArrayList<>();
+            dataFileMetaData.add(dataDimensions);
+            dataFileMetaData.add(++treeHeight);
+            byte[] metaDataInBytes = DataFileHandler.serialize(dataFileMetaData);
+            byte[] goodPutLengthInBytes = DataFileHandler.serialize(metaDataInBytes.length);
+            byte[] block = new byte[BLOCK_SIZE];
+            System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
+            System.arraycopy(metaDataInBytes, 0, block, goodPutLengthInBytes.length, metaDataInBytes.length);
+
+            RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
+            f.write(block);
+            f.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Calculates and return an integer which represents the maximum number of records a block of BLOCK_SIZE can have
+    public static int calculateMaxEntriesInNode() {
+        ArrayList<Entry> entries = new ArrayList<>();
+        int i;
+        for (i = 0; i < Integer.MAX_VALUE; i++) {
+            double[] min = new double[(int) dataDimensions];
+            double[] max = new double[(int) dataDimensions];
+            for (int d = 0; d < dataDimensions; d++){
+                min[d] = 0.0;
+                max[d] = 0.0;
+            }
+            Entry entry = new Entry(new Rectangle(min, max), 0,  false);
+            entries.add(entry);
+            byte[] nodeInBytes = new byte[0];
+            byte[] goodPutBytes = new byte[0];
+            try {
+                nodeInBytes = DataFileHandler.serialize(new Node(entries, false, 0, 0));
+                goodPutBytes = DataFileHandler.serialize(nodeInBytes.length);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (goodPutBytes.length + nodeInBytes.length > BLOCK_SIZE)
+                break;
+        }
+        return i;
+    }
+    public static long getMaxBlockId() {
+        File file = new File(PATH_TO_FILE);
+        if (!file.exists()) return 0;
+        return (file.length() / BLOCK_SIZE) - 1; // Block 0 is metadata
     }
 }

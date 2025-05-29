@@ -1,58 +1,32 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Node implements Serializable {
     private List<Entry> entries;
-    private boolean isLeaf;
-    private int level;
-    private long blockId;
-    private long parentNodeId;
-    private boolean isPartOfTheTree;
+    private final boolean isLeaf;
+    private final long blockId;
+    private long parentNodeId;  // Added parent reference
+    private boolean isPartOfTheTree = true;
 
     public Node(List<Entry> entries, boolean isLeaf, long blockId) {
-        this(entries, isLeaf, blockId, -1L);
+        this(entries, isLeaf, blockId, -1); // -1 means no parent (root)
     }
-    int getLevel() {
-        return level;
-    }
+
     public Node(List<Entry> entries, boolean isLeaf, long blockId, long parentNodeId) {
-        this.isPartOfTheTree = true;
         this.entries = entries;
         this.isLeaf = isLeaf;
         this.blockId = blockId;
         this.parentNodeId = parentNodeId;
     }
-    public Node(int i, ArrayList<Entry> entries) {
-        //something
-    }
-    public ArrayList<Entry> getEntries() {
-        return (ArrayList<Entry>) this.entries;
-    }
-    public boolean isLeaf() {
-        return this.isLeaf;
-    }
-    public long getBlockId() {
-        return this.blockId;
-    }
-    public long getParentNodeId() {
-        return this.parentNodeId;
-    }
-    public boolean getIsPartOfTheTree() {
-        return this.isPartOfTheTree;
-    }
-    public void setParentNodeId(long parentNodeId) {
-        this.parentNodeId = parentNodeId;
-    }
-    public void setIsPartOfTheTree(boolean isPartOfTheTree) {
-        this.isPartOfTheTree = isPartOfTheTree;
-    }
+
+    public List<Entry> getEntries() { return entries; }
+    public boolean isLeaf() { return isLeaf; }
+    public long getBlockId() { return blockId; }
+    public long getParentNodeId() { return parentNodeId; }
+    public boolean getIsPartOfTheTree() { return isPartOfTheTree; }
+    public void setParentNodeId(long parentNodeId) { this.parentNodeId = parentNodeId; }
+    public void setIsPartOfTheTree(boolean isPartOfTheTree) { this.isPartOfTheTree = isPartOfTheTree; }
     public void addEntry(Entry entry) {
-        this.entries.add(entry);
+        entries.add(entry);
     }
 }
