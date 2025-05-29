@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RStarTree {
-    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 360;
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
-    private int currentLevel;
     private final double REINSERT_P = 0.3;
+    private Set<Integer> reinsertedLevels = new HashSet<>();
 
     public RStarTree() {
         IndexFileHandler.setRootBlockId(1);
@@ -22,7 +22,8 @@ public class RStarTree {
     /**
      * Inserts a new point into the R*-tree
      */
-     public void insert(Point point) {
+    public void insert(Point point) {
+        reinsertedLevels.clear();
         Entry newEntry = new Entry(point.toRectangle(), -1, true);
 
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
@@ -31,7 +32,7 @@ public class RStarTree {
         leaf.addEntry(newEntry);
 
         if (leaf.getEntries().size() > maxEntries) {
-            overflowTreatment(leaf, new ArrayList<>(leaf.getEntries()), getCurrentLevel(leaf));
+            overflowTreatment(leaf, new ArrayList<>(leaf.getEntries()));
         } else {
             IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight()); // Add this
         }
@@ -46,25 +47,32 @@ public class RStarTree {
         // I2: Overflow check
         if (N.getEntries().size() < maxEntries) {
             N.addEntry(E);
+            IndexFileHandler.updateNode(N, IndexFileHandler.getTreeHeight());
         } else {
             // I2: OverflowTreatment
             List<Entry> allEntries = new ArrayList<>(N.getEntries());
             allEntries.add(E);
-            overflowTreatment(N, allEntries, level);
+            overflowTreatment(N, allEntries);
         }
 
         // I4: Adjust covering rectangles
         adjustTree(N);
     }
 
-    private void overflowTreatment(Node N, List<Entry> entries, int level) {
+    private void overflowTreatment(Node N, List<Entry> entries) {
         // OT1: Reinsert or Split
-//        if (level < currentLevel) {
-//            reinsert(N, entries);
-//        } else {
-//            split(N, entries);
-//        }
-        split(N, entries);
+        int level = getCurrentLevel(N);
+        int rootLevel = (int) IndexFileHandler.getTreeHeight() - 1;
+
+        if (level < rootLevel && !reinsertedLevels.contains(level)) {
+            reinsertedLevels.add(level);
+            System.out.println("reinsert");
+            reinsert(N, entries);
+        } else {
+            System.out.println("split");
+            split(N, entries);
+        }
+//        split(N, entries);
     }
 
     private void reinsert(Node N, List<Entry> entries) {
@@ -87,18 +95,28 @@ public class RStarTree {
         updateMBR(N);
         IndexFileHandler.updateNode(N, IndexFileHandler.getTreeHeight());
 
-        // Reinsert
-        toReinsert.forEach(e -> Insert(e, currentLevel));
+        // Reinsert entries with proper level calculation
+        Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+        for (Entry e : toReinsert) {
+            // Find the new leaf node for this entry
+            Node newLeaf = chooseSubtree(root, e.getRectangle());
+
+            // Calculate the CORRECT level for reinsertion
+            int newLevel = getCurrentLevel(newLeaf);
+
+            // Insert with the proper level
+            Insert(e, newLevel);
+        }
     }
 
     private int getCurrentLevel(Node node) {
-        int level = 0;
+        int depth = 0;
         Node current = node;
         while (current != null && current.getParentNodeId() != -1) {
-            level++;
+            depth++;
             current = IndexFileHandler.readNode(current.getParentNodeId());
         }
-        return ++level;
+        return ((int) IndexFileHandler.getTreeHeight() - 1) - depth;
     }
 
     private void adjustTree(Node node) {
@@ -242,7 +260,6 @@ public class RStarTree {
             IndexFileHandler.setTreeHeight(IndexFileHandler.getTreeHeight() + 1);
 
             IndexFileHandler.updateMetaDataBlock();
-            currentLevel = (int) IndexFileHandler.getTreeHeight() - 1;
         } else {
             // Update parent node
             Node parent = IndexFileHandler.readNode(node.getParentNodeId());
@@ -255,7 +272,7 @@ public class RStarTree {
             parent.addEntry(createEntryForNode(newNode2));
 
             if (parent.getEntries().size() > maxEntries) {
-                overflowTreatment(parent, new ArrayList<>(parent.getEntries()), getCurrentLevel(parent));
+                overflowTreatment(parent, new ArrayList<>(parent.getEntries()));
             }
             IndexFileHandler.updateNode(parent, IndexFileHandler.getTreeHeight());
         }
