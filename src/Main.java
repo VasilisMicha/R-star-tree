@@ -36,6 +36,9 @@ public class Main {
         DataFileHandler.initializeDataFile(2, true);
         System.out.println(DataFileHandler.calculateMaxPointsInBlock());
         File dataFile = new File("src//datafile.dat");
-        System.out.println(dataFile.length()/(32*1024));
+        ArrayList<Point> points = DataFileHandler.readDataFileBlock(6);
+        for (Point point : points){
+            System.out.println(point.getBlockId()+". name: "+point.getName());
+        }
     }
 }

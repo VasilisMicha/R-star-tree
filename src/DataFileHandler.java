@@ -84,7 +84,9 @@ class DataFileHandler {
                         writeDataFileBlock(points);
                         points =  new ArrayList<>();
                     }
-                    points.add(new Point(stringPoint));
+                    Point point = new Point(stringPoint);
+                    point.setBlockId(getMaxBlockId() + 1);
+                    points.add(point);
                 }
             }
         }catch(Exception e){e.printStackTrace();}
@@ -182,22 +184,6 @@ class DataFileHandler {
             IndexFileHandler.updateMetaDataBlock();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void savePointsToDataFile(List<Point> points) {
-        ArrayList<Point> currentBlock = new ArrayList<>();
-        int pointsPerBlock = calculateMaxPointsInBlock();
-        for (Point p : points) {
-            p.setBlockId(getMaxBlockId() + 1);
-            currentBlock.add(p);
-            if (currentBlock.size() == pointsPerBlock) {
-                writeDataFileBlock(currentBlock);
-                currentBlock.clear();
-            }
-        }
-        if (!currentBlock.isEmpty()) {
-            writeDataFileBlock(currentBlock);
         }
     }
 

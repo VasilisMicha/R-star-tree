@@ -5,23 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="KNN Query and some fixes">
-      <change beforePath="$PROJECT_DIR$/.idea/dbtechnology.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbtechnology.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Entry.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/IdDistancePair.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LinearSearchNearestNeighbours.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/NearestNeighboursQuery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Query.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/QueryDimensions.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/data2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
