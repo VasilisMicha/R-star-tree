@@ -51,6 +51,7 @@ public class IndexFileHandler {
                 if (dataDimensions <= 0)
                     throw new IllegalStateException("The number of data dimensions must be a positive integer");
                 rootBlockId = -1;
+                treeHeight = 0;
                 updateMetaDataBlock();
             }
         } catch(Exception e){e.printStackTrace();}

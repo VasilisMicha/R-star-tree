@@ -3,18 +3,6 @@ import java.io.Serializable;
 public class Rectangle implements Serializable {
     private final double[] min;
     private final double[] max;
-    private String name;
-    private String id;
-
-    public Rectangle(double[] min, double[] max, String id, String name) {
-        this.min =min.clone();
-        this.max =max.clone();
-        this.id = id;
-        this.name = name;
-    }
-
-    public String getId(){ return id; }
-    public String getName(){ return name; }
 
     public Rectangle(double[] min, double[] max) {
         if (min.length != max.length)

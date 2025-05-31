@@ -5,26 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="KNN Query and some fixes">
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/QueryDimensions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dbtechnology/src/data2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbtechnology.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbtechnology.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/BoundingBox.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Bounds.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Entry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/EntryComparator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LeafEntry.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LinearSearchNearestNeighbours.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/LinearSearchNearestNeighbours.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LinearSearchRangeQuery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/NearestNeighboursQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/NearestNeighboursQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Point.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Query.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/DataParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Entry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/IdDistancePair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/IndexFileHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/LinearSearchNearestNeighbours.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/NearestNeighboursQuery.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Node.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Point.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Query.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/QueryDimensions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/RStarTree.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/Rectangle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbtechnology/src/data2.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,15 +53,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "DataFileHnadler",
-    "last_opened_file_path": "C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DataFileHnadler&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.12150669&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maria\IdeaProjects\dbtechnology\dbtechnology\src" />

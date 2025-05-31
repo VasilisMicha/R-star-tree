@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Long.parseLong;
+
 public class DataParser {
     public static List<Point> parsePointsAutoDetect(String filePath, QueryDimensions queryDims) throws IOException {
         List<Point> points = new ArrayList<>();  //List to store points
@@ -39,7 +41,7 @@ public class DataParser {
                 String[] tokens = line.split(",");
                 if (tokens.length < 2) continue;  //Min required columns: id, name
 
-                String id = tokens[0];
+                long id = parseLong(tokens[0]);
                 String name = tokens[1];
 
                 double[] coords = extractCoordinates(tokens, queryDims, headerIndexMap);
