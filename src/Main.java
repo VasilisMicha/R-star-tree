@@ -7,6 +7,24 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        DataFileHandler.initializeDataFile(2, true); // 2 dimensions, create new file
+        QueryDimensions dims = new QueryDimensions("lat", "lon");
+        List<Point> points = DataParser.parsePointsAutoDetect("src/data2.csv", dims);
+        DataFileHandler.savePointsToDataFile(points);
+        // Initialize index file
+        IndexFileHandler.initializeIndexFile(2, true); // 2 dimensions, create new file
+        // Create R*-Tree and bulk load points
+        RStarTree tree = new RStarTree();
+        tree.bulkLoad(points);
+        System.out.println("Tree built with bulk loading");
+        System.out.println("Root block ID: " + IndexFileHandler.getRootBlockId());
+        System.out.println("Tree height: " + IndexFileHandler.getTreeHeight());
+    }
+}
+
+/*
+public class Main {
+    public static void main(String[] args) throws IOException {
 //        QueryDimensions queryDims = new QueryDimensions("lat", "lon");
 //        String filePath = "src/data2.csv";
 //        List<Point> points = DataParser.parsePointsAutoDetect(filePath, queryDims);
@@ -39,3 +57,4 @@ public class Main {
         System.out.println(dataFile.length()/(32*1024));
     }
 }
+ */
