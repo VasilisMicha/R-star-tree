@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="initial commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/TestRStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/TestRStarTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexfile.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/TestRStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/TestRStarTree.java" afterDir="false" />
@@ -199,7 +197,8 @@
     <MESSAGE value="." />
     <MESSAGE value="Add CSV parsing logic and dynamic point creation&#10;&#10;Reimplemented the `DataParser` class to include CSV file parsing with dynamic column detection for coordinates and created a `Point` class to store parsed data. Updated project configuration files and added sample data files to test the implementation." />
     <MESSAGE value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add RangeQuery class for rectangular range search&#10;&#10;Introduced a RangeQuery class that performs point searches within a defined rectangular range based on minimum and maximum coordinates." />
+    <MESSAGE value="KNN Query and some fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="KNN Query and some fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

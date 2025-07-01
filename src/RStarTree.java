@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RStarTree {
-    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode() - 360;
+    private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
     private final int minEntries = (int) (maxEntries * 0.4);
     private long nextBlockId = 1;
     private final double REINSERT_P = 0.3;
@@ -66,10 +66,8 @@ public class RStarTree {
 
         if (level < rootLevel && !reinsertedLevels.contains(level)) {
             reinsertedLevels.add(level);
-            System.out.println("reinsert");
             reinsert(N, entries);
         } else {
-            System.out.println("split");
             split(N, entries);
         }
 //        split(N, entries);

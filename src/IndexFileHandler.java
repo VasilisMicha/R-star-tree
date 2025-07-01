@@ -110,7 +110,6 @@ public class IndexFileHandler {
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
             System.arraycopy(nodeInBytes, 0, block, goodPutLengthInBytes.length, nodeInBytes.length);
 
-            System.out.println("Create: blockId: "+node.getBlockId()+" parentId: "+node.getParentNodeId()+" entries: "+node.getEntries().size());
             FileOutputStream fos = new FileOutputStream(PATH_TO_FILE,true);
             BufferedOutputStream bout = new BufferedOutputStream(fos);
             bout.write(block);
@@ -157,7 +156,6 @@ public class IndexFileHandler {
             byte[] goodPutLengthInBytes = DataFileHandler.serialize(nodeInBytes.length);
             byte[] block = new byte[BLOCK_SIZE];
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
-            System.out.println("Update: blockId: "+node.getBlockId()+" parentId: "+node.getParentNodeId()+" entries: "+node.getEntries().size());
             System.arraycopy(nodeInBytes, 0, block, goodPutLengthInBytes.length, nodeInBytes.length);
 
             RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
@@ -185,7 +183,6 @@ public class IndexFileHandler {
             byte[] metaDataInBytes = DataFileHandler.serialize(dataFileMetaData);
             byte[] goodPutLengthInBytes = DataFileHandler.serialize(metaDataInBytes.length);
             byte[] block = new byte[BLOCK_SIZE];
-            System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
             System.arraycopy(metaDataInBytes, 0, block, goodPutLengthInBytes.length, metaDataInBytes.length);
 
             RandomAccessFile f = new RandomAccessFile(new File(PATH_TO_FILE), "rw");
