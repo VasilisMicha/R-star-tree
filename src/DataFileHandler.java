@@ -73,7 +73,7 @@ class DataFileHandler {
                 if (dataDimensions <= 0)
                     throw new IllegalStateException("The number of data dimensions must be a positive integer");
                 maxRecords = calculateMaxPointsInBlock();
-                updateMetaDataBlock();
+                createMetaDataBlock();
                 ArrayList<Point> points = new ArrayList<>();
                 BufferedReader csvReader = (new BufferedReader(new FileReader(PathToCsvFile)));
                 String stringPoint;
@@ -87,6 +87,9 @@ class DataFileHandler {
                     Point point = new Point(stringPoint);
                     point.setBlockId(getMaxBlockId() + 1);
                     points.add(point);
+                }
+                if (!points.isEmpty()){
+                    writeDataFileBlock(points);
                 }
             }
         }catch(Exception e){e.printStackTrace();}
@@ -105,7 +108,7 @@ class DataFileHandler {
             if (bis.read(block,0,BLOCK_SIZE) != BLOCK_SIZE)
                 throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
 
-            byte[] goodPutLengthInBytes = serialize(new Random().nextInt()); // Serializing an integer ir order to get the size of goodPutLength in bytes
+            byte[] goodPutLengthInBytes = serialize(new Random().nextInt()); // Serializing an integer in order to get the size of goodPutLength in bytes
             System.arraycopy(block, 0, goodPutLengthInBytes, 0, goodPutLengthInBytes.length);
 
             byte[] dataInBlock = new byte[(Integer)deserialize(goodPutLengthInBytes)];
@@ -120,7 +123,7 @@ class DataFileHandler {
     }
 
 
-    private static void updateMetaDataBlock() {
+    private static void createMetaDataBlock() {
         try {
             ArrayList<Integer> dataFileMetaData = new ArrayList<>();
             dataFileMetaData.add(dataDimensions);
@@ -146,7 +149,7 @@ class DataFileHandler {
      * @param blockId
      * @return
      */
-    static ArrayList<Point> readDataFileBlock(int blockId){
+    static ArrayList<Point> readDataFileBlock(long blockId){
         try {
             RandomAccessFile raf = new RandomAccessFile(new File(PathToDatafile), "rw");
             FileInputStream fis = new FileInputStream(raf.getFD());
@@ -181,7 +184,6 @@ class DataFileHandler {
             FileOutputStream fos = new FileOutputStream(PathToDatafile,true);
             BufferedOutputStream bout = new BufferedOutputStream(fos);
             bout.write(block);
-            IndexFileHandler.updateMetaDataBlock();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,6 +216,7 @@ class DataFileHandler {
     public static long getMaxBlockId() {
         File file = new File(PathToDatafile);
         if (!file.exists()) return 0;
+        System.out.println(file.length());
         return (file.length() / BLOCK_SIZE) - 1; // Block 0 is metadata
     }
 }
