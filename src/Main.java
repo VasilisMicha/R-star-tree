@@ -8,9 +8,13 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws IOException {
         DataFileHandler.initializeDataFile(2, true);
-        ArrayList<Point> points = DataFileHandler.readDataFileBlock(1);
-        for (Point point : points){
-            System.out.println(point.getName());
+        long maxId = DataFileHandler.getMaxBlockId();
+        for (int i=0; i<maxId; i++){
+            ArrayList<Point> points = DataFileHandler.readDataFileBlock(i+1);
+            for (Point point : points){
+                System.out.println(point.getBlockId()+" ."+point.getName());
+            }
+
         }
     }
 }

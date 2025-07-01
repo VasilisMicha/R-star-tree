@@ -216,7 +216,6 @@ class DataFileHandler {
     public static long getMaxBlockId() {
         File file = new File(PathToDatafile);
         if (!file.exists()) return 0;
-        System.out.println(file.length());
         return (file.length() / BLOCK_SIZE) - 1; // Block 0 is metadata
     }
 }
