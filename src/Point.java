@@ -105,4 +105,7 @@ public class Point implements Serializable {
         return coords;
     }
 
+    public long getId() {
+        return id;
+    }
 }

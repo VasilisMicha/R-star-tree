@@ -5,14 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="Removed logs and changed main">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Rectangle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Rectangle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rectangle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/data2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/datafile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexfile.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -35,6 +60,7 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2vBNbh5slfIdhtHyXvvBzuI6KIR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -55,6 +81,33 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maria\IdeaProjects\dbtechnology\dbtechnology\src" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="dbtechnology" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="DBTechnology" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="DBTechnology" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -107,6 +160,9 @@
     </task>
     <option name="localTasksCounter" value="6" />
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

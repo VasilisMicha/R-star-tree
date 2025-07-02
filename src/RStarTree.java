@@ -12,15 +12,18 @@ public class RStarTree {
         IndexFileHandler.updateMetaDataBlock();
         createNewNode(true, -1); //creating node
     }
+
+    public Node getRoot() {
+        return IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+    }
     public void insert(Point point) {
-        Entry newEntry = new Entry(point.toRectangle(), -1, true);
+        Entry newEntry = new Entry(point.toRectangle(), point.getBlockId(), true);
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node leaf = chooseSubtree(root, newEntry.getRectangle());
         leaf.addEntry(newEntry);
+        IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight());  // Αποθήκευση αλλαγών
         if (leaf.getEntries().size() > maxEntries) {
             overflowTreatment(leaf, new ArrayList<>(leaf.getEntries()), getCurrentLevel(leaf));
-        } else {
-            IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight()); // Add this
         }
         adjustTree(leaf);
     }
@@ -445,5 +448,44 @@ public class RStarTree {
             }
         }
         return maxAxis;
+    }
+
+    public void delete(Point point) {
+        Entry entryToDelete = new Entry(point.toRectangle(), point.getBlockId(), true);
+        Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+        deleteRecursive(root, entryToDelete);
+        adjustTree(root);
+    }
+    private boolean deleteRecursive(Node node, Entry entryToDelete) {
+        if (node.isLeaf()) {
+            // Αφαίρεση entry από το φύλλο
+            boolean removed = node.getEntries().removeIf(e ->
+                    e.getBlockId() == entryToDelete.getBlockId() &&
+                            Arrays.equals(e.getRectangle().getMin(), entryToDelete.getRectangle().getMin())
+            );
+            if (removed) {
+                IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
+                return true;
+            }
+            return false;
+        } else {
+            // Αναδρομική αναζήτηση στα παιδιά
+            for (Entry entry : node.getEntries()) {
+                if (entry.getRectangle().contains(entryToDelete.getRectangle().getMin())) {
+                    Node child = IndexFileHandler.readNode(entry.getBlockId());
+                    if (deleteRecursive(child, entryToDelete)) {
+                        if (child.getEntries().size() < minEntries) {
+                            handleUnderflow(child);
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+    private void handleUnderflow(Node node) {
+        // Επανένωση ή αναδιανομή entries (προαιρετικό για πλήρη υλοποίηση)
+        System.out.println("Underflow handling not fully implemented!");
     }
 }

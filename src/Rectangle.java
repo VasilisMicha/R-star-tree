@@ -3,6 +3,21 @@ import java.io.Serializable;
 public class Rectangle implements Serializable {
     private final double[] min;
     private final double[] max;
+    private String name;
+    private long id;
+    public long getId(){ return id; }
+    public String getName(){ return name; }
+
+    public Rectangle(double[] min, double[] max, long id, String name) {
+        this.min =min.clone();
+        this.max =max.clone();
+        this.id = id;
+        this.name = name;
+    }
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Min: " + min + ", Max: " + max;
+    }
 
     public Rectangle(double[] min, double[] max) {
         if (min.length != max.length)
@@ -35,6 +50,25 @@ public class Rectangle implements Serializable {
             area *= max[i] - min[i];
         }
         return area;
+    }
+
+    public boolean intersects(Rectangle other) {
+        for (int i = 0; i < min.length; i++) {
+            if (this.max[i] < other.min[i] || this.min[i] > other.max[i]) {
+                return false; // Δεν υπάρχει επικάλυψη στη διάσταση i
+            }
+        }
+        return true; // Υπάρχει επικάλυψη σε όλες τις διαστάσεις
+    }
+
+    public boolean contains(Point p) {
+        double[] coords = p.getCoordinates();
+        for (int i = 0; i < min.length; i++) {
+            if (coords[i] < min[i] || coords[i] > max[i]) {
+                return false; // Το σημείο είναι έξω από τα όρια σε κάποια διάσταση
+            }
+        }
+        return true; // Το σημείο είναι μέσα στο ορθογώνιο σε όλες τις διαστάσεις
     }
 
     /** Returns the minimal rectangle enclosing this and another rectangle. */
@@ -88,5 +122,9 @@ public class Rectangle implements Serializable {
             // else coord is within bounds on this dimension
         }
         return Math.sqrt(sum);
+    }
+
+    public boolean contains(double[] coords) {
+        return contains(new Point(coords));
     }
 }

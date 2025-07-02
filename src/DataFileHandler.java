@@ -13,7 +13,7 @@ import java.util.Random;
 class DataFileHandler {
     private static final int BLOCK_SIZE = 32 * 1024; // Each Block is 32KB
     static final String PathToDatafile = "src//datafile.dat";
-    private static String PathToCsvFile = "src//data2.csv";
+    public static String PathToCsvFile = "src//data2.csv";
     private static final String DELIMITER = ",";
     public static int dataDimensions;
     private static int maxRecords;

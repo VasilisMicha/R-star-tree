@@ -219,7 +219,8 @@ public class IndexFileHandler {
             if (goodPutBytes.length + nodeInBytes.length > BLOCK_SIZE)
                 break;
         }
-        return i;
+        //return i;
+        return 25;
     }
     public static long getMaxBlockId() {
         File file = new File(PATH_TO_FILE);
