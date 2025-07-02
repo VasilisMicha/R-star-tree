@@ -3,7 +3,6 @@
  * The skyline contains points not dominated by others (no worse in all dimensions and better in at least one).
  * It uses a priority queue for best-first traversal, pruning subtrees dominated by the skyline.
  * Filters out points with NaN coordinates to ensure valid results.
- * @author athinaanv
  **/
 
 import java.util.*;

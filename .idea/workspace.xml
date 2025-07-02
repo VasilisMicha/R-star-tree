@@ -4,86 +4,89 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="Removed logs and changed main">
+    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Entry.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Entry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IdDistancePair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IdDistancePair.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours$PointDistancePair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours$PointDistancePair.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/NearestNeighboursQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/NearestNeighboursQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Node.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Query.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Query.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/QueryDimensions.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/QueryDimensions.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTreeRangeQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTreeRangeQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Rectangle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Rectangle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BBS_Query$NodeEntry.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BBS_Query$NodeEntry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BBS_Query.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BBS_Query.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BNL_Query.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Skyline_BNL_Query.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IdDistancePair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IdDistancePair.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LinearSearchNearestNeighbours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LinearSearchNearestNeighbours.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NearestNeighboursQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NearestNeighboursQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Query.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/QueryDimensions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/QueryDimensions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RStarTreeRangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTreeRangeQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RangeQuery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Rectangle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rectangle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/data2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Skyline_BBS_Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Skyline_BBS_Query.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Skyline_BNL_Query.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Skyline_BNL_Query.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/datafile.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexfile.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/dbtechnology/src/DataFileHandler.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
-  </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
+  &quot;associatedIndex&quot;: 2
 }</component>
-  <component name="ProjectId" id="2vBNbh5slfIdhtHyXvvBzuI6KIR" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2vBEH0YSFkDc6VgVJMA4EOE9IBL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DataFileHnadler&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.12150669&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "#1 on DataFileHnadler",
+    "jdk.selected.JAVA_MODULE": "21",
+    "last_opened_file_path": "C:/Users/vasil/Documents/Projects/IdeaProjects/DBTechnology/src",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "onboarding.tips.debug.path": "C:/Users/vasil/Documents/Projects/IdeaProjects/DBTechnology/untitled/src/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.12150669",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.editor"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\maria\IdeaProjects\dbtechnology\dbtechnology\src" />
-    </key>
-  </component>
+}]]></component>
   <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="dbtechnology" />
       <method v="2">
@@ -91,96 +94,60 @@
       </method>
     </configuration>
     <configuration default="true" type="JetRunConfigurationType">
-      <module name="DBTechnology" />
+      <module name="dbtechnology" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="DBTechnology" />
+      <module name="dbtechnology" />
       <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="dbtechnology" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="dbtechnology" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="" />
-      <created>1743614581046</created>
+      <changelist id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="" />
+      <created>1743609977692</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1743614581046</updated>
+      <updated>1743609977692</updated>
     </task>
-    <task id="LOCAL-00001" summary="DataFileHandler and Point class">
-      <option name="closed" value="true" />
-      <created>1744557776728</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1744557776728</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Linear Search and some other classes that were needed">
-      <option name="closed" value="true" />
-      <created>1745404932273</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1745404932273</updated>
-    </task>
-    <task id="LOCAL-00003" summary="KNN Query and some fixes">
-      <option name="closed" value="true" />
-      <created>1748347695553</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1748347695553</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Datafile is complete">
-      <option name="closed" value="true" />
-      <created>1751396977034</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1751396977034</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Removed logs and changed main">
-      <option name="closed" value="true" />
-      <created>1751397877326</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1751397877326</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
     <servers />
-  </component>
-  <component name="UnknownFeatures">
-    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="DataFileHandler and Point class" />
-    <MESSAGE value="Linear Search and some other classes that were needed" />
-    <MESSAGE value="KNN Query and some fixes" />
-    <MESSAGE value="Datafile is complete" />
-    <MESSAGE value="Removed logs and changed main" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed logs and changed main" />
   </component>
 </project>

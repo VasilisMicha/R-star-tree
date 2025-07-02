@@ -10,23 +10,30 @@ public class RStarTree {
         IndexFileHandler.setRootBlockId(1);
         IndexFileHandler.setTreeHeight(1);
         IndexFileHandler.updateMetaDataBlock();
-        createNewNode(true, -1); //creating node
+        createNewNode(true, -1); //Creating node
     }
 
     public Node getRoot() {
         return IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
     }
+
+     //Inserts a point into the R-tree by creating a new entry, finding the appropriate leaf node,
+    //adding the entry, handling node overflow if necessary, and then adjusting the tree structure.
     public void insert(Point point) {
         Entry newEntry = new Entry(point.toRectangle(), point.getBlockId(), true);
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node leaf = chooseSubtree(root, newEntry.getRectangle());
         leaf.addEntry(newEntry);
-        IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight());  // Αποθήκευση αλλαγών
+        IndexFileHandler.updateNode(leaf, IndexFileHandler.getTreeHeight());
         if (leaf.getEntries().size() > maxEntries) {
             overflowTreatment(leaf, new ArrayList<>(leaf.getEntries()), getCurrentLevel(leaf));
         }
         adjustTree(leaf);
     }
+
+      //Inserts an entry at a specified level by choosing the appropriate subtree,
+     //adding the entry if there is space, or handling overflow if the node is full.
+    //Τhen, it adjusts the tree to maintain its properties.
     private void Insert(Entry E, int level) {
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node N = chooseSubtree(root, E.getRectangle());
@@ -49,6 +56,8 @@ public class RStarTree {
 //        }
         split(N, entries);
     }
+
+    //Reinserts a portion of entries from a node to improve tree balance.
     private void reinsert(Node N, List<Entry> entries) {
         Rectangle nodeMBR = computeMBR(entries);
         Point center = nodeMBR.getCenter();
@@ -64,6 +73,9 @@ public class RStarTree {
         IndexFileHandler.updateNode(N, IndexFileHandler.getTreeHeight());
         toReinsert.forEach(e -> Insert(e, currentLevel));
     }
+
+    //Determines the current level of a node in the tree by traversing up
+   //through its parent nodes until reaching the root, counting the levels.
     private int getCurrentLevel(Node node) {
         int level = 0;
         Node current = node;
@@ -73,6 +85,9 @@ public class RStarTree {
         }
         return ++level;
     }
+
+    //Adjusts the tree upwards from a given node, updating the minimum bounding rectangles (MBRs)
+   //and saving changes while avoiding cycles to maintain tree consistency.
     private void adjustTree(Node node) {
         Set<Long> visited = new HashSet<>(); // Prevent cycles
         while (node != null && !visited.contains(node.getBlockId())) {
@@ -85,6 +100,7 @@ public class RStarTree {
                     : null;
         }
     }
+
     private boolean updateMBR(Node node) {
         boolean changed = false;
         if (!node.isLeaf()) {
@@ -99,6 +115,8 @@ public class RStarTree {
         }
         return changed;
     }
+
+    //Selects the best subtree for inserting a new rectangle by traversing the tree.
     private Node chooseSubtree(Node node, Rectangle newRect) {
         Node current = node;
         while (true) {
@@ -133,6 +151,8 @@ public class RStarTree {
             current = IndexFileHandler.readNode(bestEntry.getBlockId());
         }
     }
+
+    //Calculates the total increase in overlap caused by enlarging an entry’s rectangle.
     private double calculateOverlapEnlargement(List<Entry> entries, Entry entry, Rectangle newRect) {
         Rectangle enlarged = entry.getRectangle().enlarge(newRect);
         double totalOverlapEnlargement = 0.0;
@@ -145,6 +165,7 @@ public class RStarTree {
         }
         return totalOverlapEnlargement;
     }
+
     private void split(Node node, List<Entry> allEntries) {
         node.setIsPartOfTheTree(false);
         IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
@@ -188,6 +209,10 @@ public class RStarTree {
             IndexFileHandler.updateNode(newRoot, IndexFileHandler.getTreeHeight());
         }
     }
+
+      //Splits a node into two by choosing the best axis and split index,
+     //distributes entries between two new nodes, updates parent references
+    //and adjusts the tree structure by creating a new root if necessary.
     private void updateChildParentReferences(Node parentNode) {
         if (parentNode.isLeaf()) return;
         for (Entry entry : parentNode.getEntries()) {
@@ -201,6 +226,9 @@ public class RStarTree {
             }
         }
     }
+
+    //Chooses the best axis to split a node by evaluating and comparing
+   //the sum of margins for all possible split axes, selecting the one minimizing total margin.
     private int chooseSplitAxis(List<Entry> entries) {
         int dimensions = entries.get(0).getRectangle().getMin().length;
         double minS = Double.POSITIVE_INFINITY;
@@ -215,6 +243,8 @@ public class RStarTree {
         }
         return bestAxis;
     }
+
+     //Calculates the sum of margins for all possible splits along a given axis.
     private double computeMarginSum(List<Entry> entries, int axis, boolean useLower) {
         List<Entry> sorted = sortEntriesAlongAxis(entries, axis, useLower);
         double sum = 0.0;
@@ -229,6 +259,8 @@ public class RStarTree {
         }
         return sum;
     }
+
+     //Chooses the best split index by evaluating all possible splits.
     private int chooseSplitIndex(List<Entry> sortedEntries, int axis) {
         int bestSplitIndex = minEntries;
         double minOverlap = Double.POSITIVE_INFINITY;
@@ -250,6 +282,9 @@ public class RStarTree {
         }
         return bestSplitIndex;
     }
+
+     //Computes the minimum bounding rectangle (MBR) that encloses all given entries by
+    //finding the min and max coordinates across all dimensions.
     private Rectangle computeMBR(List<Entry> entries) {
         if (entries.isEmpty()) throw new IllegalArgumentException("Empty entries");
         double[] min = entries.get(0).getRectangle().getMin().clone();
@@ -265,18 +300,27 @@ public class RStarTree {
         }
         return new Rectangle(min, max);
     }
+
+     //Sorts entries along a specified axis based on either their lower or upper rectangle boundary,
+    //aiding in choosing split points during node splitting.
     private List<Entry> sortEntriesAlongAxis(List<Entry> entries, int axis, boolean useLower) {
         List<Entry> sorted = new ArrayList<>(entries);
         sorted.sort(Comparator.comparingDouble(e ->
                 useLower ? e.getRectangle().getMin()[axis] : e.getRectangle().getMax()[axis]));
         return sorted;
     }
+
+     //Creates a new node with a unique block ID, specified leaf status and parent ID.
+    //Then, it immediately persists it to storage.
     private Node createNewNode(boolean isLeaf, long parentNodeId) {
         long blockId = nextBlockId++;
         Node node = new Node(new ArrayList<>(), isLeaf, blockId, parentNodeId);
         IndexFileHandler.createNode(node); // Persist immediately
         return node;
     }
+
+     //Creates an entry representing a node by computing its MBR
+    //and associating it with the node’s block ID and leaf status.
     private Entry createEntryForNode(Node node) {
         Rectangle mbr = computeMBR(node.getEntries());
         Entry entry = new Entry(mbr, node.getBlockId(), node.isLeaf());
@@ -286,7 +330,7 @@ public class RStarTree {
     /**
      * Bulk loads points into the R*-Tree using a bottom-up approach (STR algorithm)
      * @param points List of points to be bulk loaded
-     */
+    **/
     public void bulkLoad(List<Point> points) {
         if (points.isEmpty()) return;
         List<Node> leafNodes = createLeafNodes(points);
@@ -300,11 +344,12 @@ public class RStarTree {
         IndexFileHandler.setTreeHeight(level + 1);
         IndexFileHandler.updateMetaDataBlock();
     }
+
     /**
      * Creates leaf nodes from points using the Sort-Tile-Recursive (STR) algorithm
      * @param points List of points to be stored in leaves
      * @return List of leaf nodes
-     */
+     **/
     private List<Node> createLeafNodes(List<Point> points) {
         List<Point> sortedPoints = sortPointsSTR(points);
         List<Node> leafNodes = new ArrayList<>();
@@ -327,7 +372,7 @@ public class RStarTree {
      * Sorts points using the Sort-Tile-Recursive algorithm
      * @param points Points to be sorted
      * @return Sorted list of points
-     */
+     **/
     private List<Point> sortPointsSTR(List<Point> points) {
         int dimensions = points.get(0).getCoordinates().length;
         List<Point> sorted = new ArrayList<>(points);
@@ -340,7 +385,7 @@ public class RStarTree {
      * Finds the axis with the largest variance in the point coordinates
      * @param points List of points
      * @return Axis index (0 for x, 1 for y, etc.)
-     */
+     **/
     private int findAxisWithLargestVariance(List<Point> points) {
         int dimensions = points.get(0).getCoordinates().length;
         double[] variances = new double[dimensions];
@@ -378,7 +423,7 @@ public class RStarTree {
      * @param nodes Nodes at the level below
      * @param level Current level (0 for leaves)
      * @return Nodes at the new level
-     */
+     **/
     private List<Node> buildTreeLevel(List<Node> nodes, int level) {
         List<Node> newLevelNodes = new ArrayList<>();
         int capacity = maxEntries;
@@ -398,11 +443,12 @@ public class RStarTree {
         }
         return newLevelNodes;
     }
+
     /**
      * Sorts nodes using the Sort-Tile-Recursive algorithm
      * @param nodes Nodes to be sorted
      * @return Sorted list of nodes
-     */
+     **/
     private List<Node> sortNodesSTR(List<Node> nodes) {
         int dimensions = nodes.get(0).getEntries().get(0).getRectangle().getMin().length;
         List<Node> sorted = new ArrayList<>(nodes);
@@ -411,11 +457,12 @@ public class RStarTree {
                 n -> computeMBR(n.getEntries()).getCenter().getCoordinates()[axis]));
         return sorted;
     }
+
     /**
-     * Finds the axis with largest variance in node centers
+     * Finds the axis with the largest variance in node centers
      * @param nodes List of nodes
      * @return Axis index (0 for x, 1 for y, etc.)
-     */
+     **/
     private int findAxisWithLargestVarianceForNodes(List<Node> nodes) {
         int dimensions = nodes.get(0).getEntries().get(0).getRectangle().getMin().length;
         double[] variances = new double[dimensions];
@@ -450,15 +497,18 @@ public class RStarTree {
         return maxAxis;
     }
 
+     //Deletes a point from the R-tree by creating its corresponding entry,
+    //recursively removing it starting from the root and then adjusting the tree.
     public void delete(Point point) {
         Entry entryToDelete = new Entry(point.toRectangle(), point.getBlockId(), true);
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         deleteRecursive(root, entryToDelete);
         adjustTree(root);
     }
+
     private boolean deleteRecursive(Node node, Entry entryToDelete) {
         if (node.isLeaf()) {
-            // Αφαίρεση entry από το φύλλο
+            //Remove entry from the leaf
             boolean removed = node.getEntries().removeIf(e ->
                     e.getBlockId() == entryToDelete.getBlockId() &&
                             Arrays.equals(e.getRectangle().getMin(), entryToDelete.getRectangle().getMin())
@@ -469,7 +519,7 @@ public class RStarTree {
             }
             return false;
         } else {
-            // Αναδρομική αναζήτηση στα παιδιά
+            //Recursive search in children
             for (Entry entry : node.getEntries()) {
                 if (entry.getRectangle().contains(entryToDelete.getRectangle().getMin())) {
                     Node child = IndexFileHandler.readNode(entry.getBlockId());
@@ -485,7 +535,7 @@ public class RStarTree {
         }
     }
     private void handleUnderflow(Node node) {
-        // Επανένωση ή αναδιανομή entries (προαιρετικό για πλήρη υλοποίηση)
+        //Rejoin/redistribute entries (optional for full implementation)
         System.out.println("Underflow handling not fully implemented!");
     }
 }

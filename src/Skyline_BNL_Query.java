@@ -2,7 +2,6 @@
  * Implements the BNL (serial block nested loop) algorithm for finding Skyline.
  * @param points list of all points
  * @return list of non-dominated points
- * @author athinaanv
  **/
 
 import java.util.ArrayList;

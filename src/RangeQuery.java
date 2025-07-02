@@ -6,7 +6,6 @@
  * @param rangeFilters Map with the limits per dimension.
  * @param queryDims Dimensions to be considered in the query.
  * @return List of points that are within the specified limits.
- * @author athinaanv
  **/
 
 import java.util.*;

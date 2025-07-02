@@ -6,7 +6,6 @@
  * compatibility with the query region. Otherwise, the recursion continues into child nodes whose
  * bounding rectangles intersect with the search area. The implementation includes a check for invalid
  * coordinate values (NaN).
- * @author athinaanv
  **/
 
 import java.util.ArrayList;

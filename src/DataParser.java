@@ -2,11 +2,10 @@
  Class for parsing data from CSV files and converting them to Point objects.
  Supports automatic detection of coordinate columns based on headers.
 
- * Reads a CSV file and returns a list of points
+ * Read a CSV file and return a list of points
  * @param filePath Path to the CSV file
  * @param queryDims The column dimensions to be exported as coordinates
  * @return List of Point objects
- * @author athinaanv
  **/
 
 import java.io.BufferedReader;
