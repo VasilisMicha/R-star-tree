@@ -1,3 +1,9 @@
+/**
+ * Class for managing the data file.
+ * Includes methods for saving, updating, reading data,
+ * as well as handling metadata (block size, etc.).
+ **/
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -6,26 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Class that is used for various tasks in the datafile and indexfile such as saving and updating
- * It also stores metadata information (file paths, block sizes and other)
- */
 class DataFileHandler {
-    private static final int BLOCK_SIZE = 32 * 1024; // Each Block is 32KB
-    static final String PathToDatafile = "src//datafile.dat";
-    private static String PathToCsvFile = "src//data2.csv";
-    private static final String DELIMITER = ",";
-    public static int dataDimensions;
-    private static int maxRecords;
+    private static final int BLOCK_SIZE = 32 * 1024; //Block size in bytes (32KB)
+    static final String PathToDatafile = "src//datafile.dat"; //Path to "data file"
+    public static String PathToCsvFile = "src//data2.csv"; //Path to CSV file
+    private static final String DELIMITER = ","; //CSV delimiter
+    public static int dataDimensions; //Data dimensionality
+    private static int maxRecords; //Max number of records per block
 
-    public static String getDelimiter(){ return DELIMITER; }
+    public static String getDelimiter() { return DELIMITER; }
 
     /**
-     * It is used for serializing an Object to byte array
-     * @param obj an Object
-     * @return a byte array
+     * Serializes an object to a byte array.
+     * @param obj The object to serialize.
+     * @return Byte array.
      * @throws IOException
-     */
+     **/
     public static byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
@@ -34,87 +36,84 @@ class DataFileHandler {
     }
 
     /**
-     * It is used to deserialize a byte array to an Object
-     *
-     * @param data a byte array
-     * @return an Object
+     * Deserializes a byte array back to an object.
+     * @param data Byte array.
+     * @return Object.
      * @throws IOException
      * @throws ClassNotFoundException
-     */
+     **/
     public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
         ByteArrayInputStream in = new ByteArrayInputStream(data);
         ObjectInputStream objectInputStream = new ObjectInputStream(in);
         return objectInputStream.readObject();
     }
 
-
-    // Calculates the total blocks in the datafile
-    // Reads the data from the CSV files and adds it to the datafile
-    static void initializeDataFile(int dimensions, boolean makeNewDataFile){
-        try{
-            // Checks if a datafile already exists, initialise the metaData from the metadata block (block 0 of the file)
-            // If already exists, initialise the variables with the values of the dimensions, block size and total blocks of the data file
-            if (!makeNewDataFile && Files.exists(Paths.get(PathToDatafile)))
-            {
+    /**
+     * Initializes the data file.
+     * @param dimensions Number of data dimensions.
+     * @param makeNewDataFile Flag to create a new file.
+     **/
+    static void initializeDataFile(int dimensions, boolean makeNewDataFile) {
+        try {
+            if (!makeNewDataFile && Files.exists(Paths.get(PathToDatafile))) {
                 ArrayList<Integer> dataFileMetaData = readMetaDataBlock();
                 if (dataFileMetaData == null)
-                    throw new IllegalStateException("Could not read datafile's Meta Data Block properly");
+                    throw new IllegalStateException("Failed to read metadata from the file.");
                 dataDimensions = dataFileMetaData.get(0);
-                if (dataDimensions  <= 0)
-                    throw new IllegalStateException("The number of data dimensions must be a positive integer");
+                if (dataDimensions <= 0)
+                    throw new IllegalStateException("Data dimensions must be a positive integer.");
                 if (dataFileMetaData.get(1) != BLOCK_SIZE)
-                    throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
+                    throw new IllegalStateException("Block size mismatch: expected " + BLOCK_SIZE);
                 maxRecords = dataFileMetaData.get(2);
-            }
-            // Else initialize a new datafile
-            else {
-                Files.deleteIfExists(Paths.get(PathToDatafile)); // Resetting/Deleting dataFile data
+            } else {
+                Files.deleteIfExists(Paths.get(PathToDatafile));
                 dataDimensions = dimensions;
                 if (dataDimensions <= 0)
-                    throw new IllegalStateException("The number of data dimensions must be a positive integer");
-                maxRecords = calculateMaxPointsInBlock();
-                createMetaDataBlock();
+                    throw new IllegalStateException("Data dimensions must be a positive integer.");
+                maxRecords = calculateMaxPointsInBlock(); //Calculates how many points fit in a block
+                createMetaDataBlock(); //Create metadata block
+
                 ArrayList<Point> points = new ArrayList<>();
-                BufferedReader csvReader = (new BufferedReader(new FileReader(PathToCsvFile)));
+                BufferedReader csvReader = new BufferedReader(new FileReader(PathToCsvFile));
                 String stringPoint;
-                while ((stringPoint = csvReader.readLine()) != null)
-                {
-                    if (points.size() == maxRecords)
-                    {
+                while ((stringPoint = csvReader.readLine()) != null) {
+                    if (points.size() == maxRecords) {
                         writeDataFileBlock(points);
-                        points =  new ArrayList<>();
+                        points = new ArrayList<>();
                     }
                     Point point = new Point(stringPoint);
                     point.setBlockId(getMaxBlockId() + 1);
                     points.add(point);
                 }
-                if (!points.isEmpty()){
+                if (!points.isEmpty()) {
                     writeDataFileBlock(points);
                 }
             }
-        }catch(Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
-    // Reads the data from the given file path
-    // Reads the Block 0, which is used for the metadata
-    // Returns an ArrayList<Integer> which includes the values for the metadata in the given file
-    private static ArrayList<Integer> readMetaDataBlock(){
+    /**
+     * Reads the metadata block (block 0) from the data file.
+     * @return A list of integers containing the metadata.
+     */
+    private static ArrayList<Integer> readMetaDataBlock() {
         try {
             RandomAccessFile raf = new RandomAccessFile(new File(PathToDatafile), "rw");
             FileInputStream fis = new FileInputStream(raf.getFD());
             BufferedInputStream bis = new BufferedInputStream(fis);
             byte[] block = new byte[BLOCK_SIZE];
-            if (bis.read(block,0,BLOCK_SIZE) != BLOCK_SIZE)
-                throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
+            if (bis.read(block, 0, BLOCK_SIZE) != BLOCK_SIZE)
+                throw new IllegalStateException("Full block of " + BLOCK_SIZE + " bytes was not read.");
 
-            byte[] goodPutLengthInBytes = serialize(new Random().nextInt()); // Serializing an integer in order to get the size of goodPutLength in bytes
+            byte[] goodPutLengthInBytes = serialize(new Random().nextInt());
             System.arraycopy(block, 0, goodPutLengthInBytes, 0, goodPutLengthInBytes.length);
 
-            byte[] dataInBlock = new byte[(Integer)deserialize(goodPutLengthInBytes)];
+            byte[] dataInBlock = new byte[(Integer) deserialize(goodPutLengthInBytes)];
             System.arraycopy(block, goodPutLengthInBytes.length, dataInBlock, 0, dataInBlock.length);
 
-            return (ArrayList<Integer>)deserialize(dataInBlock);
+            return (ArrayList<Integer>) deserialize(dataInBlock);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,15 +121,19 @@ class DataFileHandler {
         return null;
     }
 
-
+    /**
+     * Creates and writes the metadata block to the file.
+     **/
     private static void createMetaDataBlock() {
         try {
             ArrayList<Integer> dataFileMetaData = new ArrayList<>();
             dataFileMetaData.add(dataDimensions);
             dataFileMetaData.add(BLOCK_SIZE);
             dataFileMetaData.add(maxRecords);
+
             byte[] metaDataInBytes = serialize(dataFileMetaData);
             byte[] goodPutLengthInBytes = serialize(metaDataInBytes.length);
+
             byte[] block = new byte[BLOCK_SIZE];
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
             System.arraycopy(metaDataInBytes, 0, block, goodPutLengthInBytes.length, metaDataInBytes.length);
@@ -143,29 +146,29 @@ class DataFileHandler {
         }
     }
 
-
     /**
-     * Reads a block from datafile based on the id
-     * @param blockId
-     * @return
-     */
-    static ArrayList<Point> readDataFileBlock(long blockId){
+     * Reads a specific block from the data file by blockId.
+     * @param blockId Block number.
+     * @return List of points (Point) contained in the block.
+     **/
+    static ArrayList<Point> readDataFileBlock(long blockId) {
         try {
             RandomAccessFile raf = new RandomAccessFile(new File(PathToDatafile), "rw");
             FileInputStream fis = new FileInputStream(raf.getFD());
             BufferedInputStream bis = new BufferedInputStream(fis);
-            raf.seek(blockId*BLOCK_SIZE);
-            //bis = new BufferedInputStream(fis);
+
+            raf.seek(blockId * BLOCK_SIZE); //Move to the correct block
             byte[] block = new byte[BLOCK_SIZE];
-            if (bis.read(block,0,BLOCK_SIZE) != BLOCK_SIZE)
-                throw new IllegalStateException("Block size read was not of " + BLOCK_SIZE + " bytes");
+            if (bis.read(block, 0, BLOCK_SIZE) != BLOCK_SIZE)
+                throw new IllegalStateException("Full block of " + BLOCK_SIZE + " bytes was not read.");
+
             byte[] goodPutLengthInBytes = serialize(new Random().nextInt());
             System.arraycopy(block, 0, goodPutLengthInBytes, 0, goodPutLengthInBytes.length);
 
-            byte[] recordsInBlock = new byte[(Integer)deserialize(goodPutLengthInBytes)];
+            byte[] recordsInBlock = new byte[(Integer) deserialize(goodPutLengthInBytes)];
             System.arraycopy(block, goodPutLengthInBytes.length, recordsInBlock, 0, recordsInBlock.length);
 
-            return (ArrayList<Point>)deserialize(recordsInBlock);
+            return (ArrayList<Point>) deserialize(recordsInBlock);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,32 +176,46 @@ class DataFileHandler {
         return null;
     }
 
+    /**
+     * Writes a list of points to a data file block.
+     * @param records List of points to write.
+     **/
     private static void writeDataFileBlock(ArrayList<Point> records) {
         try {
             byte[] recordInBytes = serialize(records);
             byte[] goodPutLengthInBytes = serialize(recordInBytes.length);
+
             byte[] block = new byte[BLOCK_SIZE];
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
             System.arraycopy(recordInBytes, 0, block, goodPutLengthInBytes.length, recordInBytes.length);
 
-            FileOutputStream fos = new FileOutputStream(PathToDatafile,true);
+            FileOutputStream fos = new FileOutputStream(PathToDatafile, true);
             BufferedOutputStream bout = new BufferedOutputStream(fos);
             bout.write(block);
+            bout.flush();
+            bout.close();
+            fos.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static int calculateMaxPointsInBlock(){
+    /**
+     * Calculates the maximum number of points that can fit into a block,
+     * given the data dimensions and block size.
+     * @return Max number of points per block.
+     **/
+    public static int calculateMaxPointsInBlock() {
         ArrayList<Point> points = new ArrayList<>();
         int i;
         for (i = 0; i < Integer.MAX_VALUE; i++) {
-            double[] coords = new double[(int) dataDimensions];
-            for (int d = 0; d < dataDimensions; d++){
+            double[] coords = new double[dataDimensions];
+            for (int d = 0; d < dataDimensions; d++) {
                 coords[d] = 0.0;
             }
             Point point = new Point(coords);
             points.add(point);
+
             byte[] blockInBytes = new byte[0];
             byte[] goodPutBytes = new byte[0];
             try {
@@ -207,15 +224,20 @@ class DataFileHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             if (goodPutBytes.length + blockInBytes.length > BLOCK_SIZE)
                 break;
         }
         return i;
     }
 
+    /**
+     * Returns the highest block ID present in the file.
+     * @return The maximum blockId.
+     **/
     public static long getMaxBlockId() {
         File file = new File(PathToDatafile);
         if (!file.exists()) return 0;
-        return (file.length() / BLOCK_SIZE) - 1; // Block 0 is metadata
+        return (file.length() / BLOCK_SIZE) - 1; //Block 0 is metadata
     }
 }
