@@ -20,6 +20,7 @@ class DataFileHandler {
 
     public static String getDelimiter(){ return DELIMITER; }
 
+    public static int getDataDimensions(){ return dataDimensions; }
     /**
      * It is used for serializing an Object to byte array
      * @param obj an Object
@@ -217,7 +218,7 @@ class DataFileHandler {
             if (goodPutBytes.length + blockInBytes.length > BLOCK_SIZE)
                 break;
         }
-        return i-100;
+        return i;
     }
 
     public static long getMaxBlockId() {

@@ -24,7 +24,7 @@ public class RStarTree {
      */
     public void insert(Point point) {
         reinsertedLevels.clear();
-        Entry newEntry = new Entry(point.toRectangle(), -1, true);
+        Entry newEntry = new Entry(point.toRectangle(), point.getBlockId(), true);
 
         Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
         Node leaf = chooseSubtree(root, newEntry.getRectangle());
@@ -412,7 +412,7 @@ public class RStarTree {
      */
     private Entry createEntryForNode(Node node) {
         Rectangle mbr = computeMBR(node.getEntries());
-        Entry entry = new Entry(mbr, node.getBlockId(), node.isLeaf());
+        Entry entry = new Entry(mbr, node.getBlockId(), false);
         return entry;
     }
 }
