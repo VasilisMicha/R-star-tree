@@ -1,8 +1,4 @@
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 
 public class RStarTree {
     private final int maxEntries = IndexFileHandler.calculateMaxEntriesInNode();
@@ -11,7 +7,8 @@ public class RStarTree {
     private final double REINSERT_P = 0.3;
     private Set<Integer> reinsertedLevels = new HashSet<>();
 
-    public RStarTree() {
+    public RStarTree(){
+        IndexFileHandler.initializeIndexFile(2,  true);
         IndexFileHandler.setRootBlockId(1);
         IndexFileHandler.setTreeHeight(1);
         IndexFileHandler.updateMetaDataBlock();
@@ -414,5 +411,221 @@ public class RStarTree {
         Rectangle mbr = computeMBR(node.getEntries());
         Entry entry = new Entry(mbr, node.getBlockId(), false);
         return entry;
+    }
+
+    /**
+     * Bulk loads points into the R*-Tree using a bottom-up approach (STR algorithm)
+     **/
+    public void bulkLoad() {
+        List<Node> leafNodes = createLeafNodes();
+        int level = 0;
+        while (leafNodes.size() > 1) {
+            leafNodes = buildTreeLevel(leafNodes, level);
+            level++;
+        }
+        Node root = leafNodes.get(0);
+        IndexFileHandler.setRootBlockId(root.getBlockId());
+        IndexFileHandler.setTreeHeight(level + 1);
+        IndexFileHandler.updateMetaDataBlock();
+    }
+
+    /**
+     * Creates leaf nodes from points using the Sort-Tile-Recursive (STR) algorithm
+     * @return List of leaf nodes
+     **/
+    private List<Node> createLeafNodes() {
+        List<Point> sortedPoints = sortPointsSTR();
+        List<Node> leafNodes = new ArrayList<>();
+        int capacity = maxEntries;
+        for (int i = 0; i < sortedPoints.size(); i += capacity) {
+            int end = Math.min(i + capacity, sortedPoints.size());
+            List<Point> batch = sortedPoints.subList(i, end);
+            List<Entry> entries = new ArrayList<>();
+            for (Point point : batch) {
+                entries.add(new Entry(point.toRectangle(), point.getBlockId(), true));
+            }
+            Node leaf = createNewNode(true, -1);
+            leaf.getEntries().addAll(entries);
+            IndexFileHandler.updateNode(leaf, 1);
+            leafNodes.add(leaf);
+        }
+        return leafNodes;
+    }
+    /**
+     * Sorts points using the Sort-Tile-Recursive algorithm
+     * @return Sorted list of points
+     **/
+    private List<Point> sortPointsSTR() {
+        ArrayList<Point> points = new ArrayList<>();
+        IndexFileHandler.getDataDimensions();
+        long maxId = DataFileHandler.getMaxBlockId();
+        for (int j=0; j<maxId; j++) {
+            ArrayList<Point> blockPoints = DataFileHandler.readDataFileBlock(j + 1);
+            for (Point point : blockPoints) {
+                points.add(point);
+            }
+        }
+        List<Point> sorted = new ArrayList<>(points);
+        int axis = findAxisWithLargestVariance(points);
+        Collections.sort(sorted, Comparator.comparingDouble(p -> p.getCoordinates()[axis]));
+        return sorted;
+    }
+
+    /**
+     * Finds the axis with the largest variance in the point coordinates
+     * @param points List of points
+     * @return Axis index (0 for x, 1 for y, etc.)
+     **/
+    private int findAxisWithLargestVariance(List<Point> points) {
+        int dimensions = points.get(0).getCoordinates().length;
+        double[] variances = new double[dimensions];
+        double[] means = new double[dimensions];
+        for (Point p : points) {
+            for (int i = 0; i < dimensions; i++) {
+                means[i] += p.getCoordinates()[i];
+            }
+        }
+        for (int i = 0; i < dimensions; i++) {
+            means[i] /= points.size();
+        }
+        for (Point p : points) {
+            for (int i = 0; i < dimensions; i++) {
+                double diff = p.getCoordinates()[i] - means[i];
+                variances[i] += diff * diff;
+            }
+        }
+        for (int i = 0; i < dimensions; i++) {
+            variances[i] /= points.size();
+        }
+        int maxAxis = 0;
+        double maxVariance = variances[0];
+        for (int i = 1; i < dimensions; i++) {
+            if (variances[i] > maxVariance) {
+                maxVariance = variances[i];
+                maxAxis = i;
+            }
+        }
+        return maxAxis;
+    }
+
+    /**
+     * Builds a level of the tree from the nodes at the level below
+     * @param nodes Nodes at the level below
+     * @param level Current level (0 for leaves)
+     * @return Nodes at the new level
+     **/
+    private List<Node> buildTreeLevel(List<Node> nodes, int level) {
+        List<Node> newLevelNodes = new ArrayList<>();
+        int capacity = maxEntries;
+        List<Node> sortedNodes = sortNodesSTR(nodes);
+        for (int i = 0; i < sortedNodes.size(); i += capacity) {
+            int end = Math.min(i + capacity, sortedNodes.size());
+            List<Node> batch = sortedNodes.subList(i, end);
+            Node parent = createNewNode(false, -1);
+            for (Node child : batch) {
+                Entry entry = createEntryForNode(child);
+                parent.addEntry(entry);
+                child.setParentNodeId(parent.getBlockId());
+                IndexFileHandler.updateNode(child, level + 2);
+            }
+            IndexFileHandler.updateNode(parent, level + 2);
+            newLevelNodes.add(parent);
+        }
+        return newLevelNodes;
+    }
+
+    /**
+     * Sorts nodes using the Sort-Tile-Recursive algorithm
+     * @param nodes Nodes to be sorted
+     * @return Sorted list of nodes
+     **/
+    private List<Node> sortNodesSTR(List<Node> nodes) {
+        int dimensions = nodes.get(0).getEntries().get(0).getRectangle().getMin().length;
+        List<Node> sorted = new ArrayList<>(nodes);
+        int axis = findAxisWithLargestVarianceForNodes(nodes);
+        Collections.sort(sorted, Comparator.comparingDouble(
+                n -> computeMBR(n.getEntries()).getCenter().getCoordinates()[axis]));
+        return sorted;
+    }
+
+    /**
+     * Finds the axis with the largest variance in node centers
+     * @param nodes List of nodes
+     * @return Axis index (0 for x, 1 for y, etc.)
+     **/
+    private int findAxisWithLargestVarianceForNodes(List<Node> nodes) {
+        int dimensions = nodes.get(0).getEntries().get(0).getRectangle().getMin().length;
+        double[] variances = new double[dimensions];
+        double[] means = new double[dimensions];
+        for (Node n : nodes) {
+            Point center = computeMBR(n.getEntries()).getCenter();
+            for (int i = 0; i < dimensions; i++) {
+                means[i] += center.getCoordinates()[i];
+            }
+        }
+        for (int i = 0; i < dimensions; i++) {
+            means[i] /= nodes.size();
+        }
+        for (Node n : nodes) {
+            Point center = computeMBR(n.getEntries()).getCenter();
+            for (int i = 0; i < dimensions; i++) {
+                double diff = center.getCoordinates()[i] - means[i];
+                variances[i] += diff * diff;
+            }
+        }
+        for (int i = 0; i < dimensions; i++) {
+            variances[i] /= nodes.size();
+        }
+        int maxAxis = 0;
+        double maxVariance = variances[0];
+        for (int i = 1; i < dimensions; i++) {
+            if (variances[i] > maxVariance) {
+                maxVariance = variances[i];
+                maxAxis = i;
+            }
+        }
+        return maxAxis;
+    }
+
+    //Deletes a point from the R-tree by creating its corresponding entry,
+    //recursively removing it starting from the root and then adjusting the tree.
+    public void delete(Point point) {
+        Entry entryToDelete = new Entry(point.toRectangle(), point.getBlockId(), true);
+        Node root = IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+        deleteRecursive(root, entryToDelete);
+        adjustTree(root);
+    }
+
+    private boolean deleteRecursive(Node node, Entry entryToDelete) {
+        if (node.isLeaf()) {
+            //Remove entry from the leaf
+            boolean removed = node.getEntries().removeIf(e ->
+                    e.getBlockId() == entryToDelete.getBlockId() &&
+                            Arrays.equals(e.getRectangle().getMin(), entryToDelete.getRectangle().getMin())
+            );
+            if (removed) {
+                IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
+                return true;
+            }
+            return false;
+        } else {
+            //Recursive search in children
+            for (Entry entry : node.getEntries()) {
+                if (entry.getRectangle().contains(entryToDelete.getRectangle().getMin())) {
+                    Node child = IndexFileHandler.readNode(entry.getBlockId());
+                    if (deleteRecursive(child, entryToDelete)) {
+                        if (child.getEntries().size() < minEntries) {
+                            handleUnderflow(child);
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+    private void handleUnderflow(Node node) {
+        //Rejoin/redistribute entries (optional for full implementation)
+        System.out.println("Underflow handling not fully implemented!");
     }
 }

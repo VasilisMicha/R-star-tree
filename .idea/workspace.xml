@@ -4,19 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="merged with DataFileHandler">
+    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="adding ui class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/BulkLoader.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/UI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/UI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BulkLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RStarTreeRangeQuery.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RangeQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Skyline_BBS_Query.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexfile.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +130,23 @@
       <option name="project" value="LOCAL" />
       <updated>1751545320694</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="finished with linear range query">
+      <option name="closed" value="true" />
+      <created>1751563553330</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1751563553330</updated>
+    </task>
+    <task id="LOCAL-00008" summary="adding ui class">
+      <option name="closed" value="true" />
+      <created>1751563682410</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1751563682410</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -156,6 +173,8 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="added UI class" />
     <MESSAGE value="merged with DataFileHandler" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged with DataFileHandler" />
+    <MESSAGE value="finished with linear range query" />
+    <MESSAGE value="adding ui class" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding ui class" />
   </component>
 </project>

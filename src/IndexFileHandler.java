@@ -35,6 +35,8 @@ public class IndexFileHandler {
         return rootBlockId;
     }
 
+    public static long getDataDimensions(){ return dataDimensions; }
+
     /**
      * Initializes the index file.
      * - If makeNewIndexFile is false and a file exists: load metadata.
@@ -140,6 +142,7 @@ public class IndexFileHandler {
 
     //Reads and returns a node from the file by its block ID.
     public static Node readNode(long blockId) {
+        System.out.println(blockId);
         try (RandomAccessFile raf = new RandomAccessFile(PATH_TO_FILE, "rws")) {
             FileInputStream fis = new FileInputStream(raf.getFD());
             BufferedInputStream bis = new BufferedInputStream(fis);
@@ -172,6 +175,7 @@ public class IndexFileHandler {
      **/
     public static void updateNode(Node node, long totalLevelsOfTreeIndex) {
         if (node.getParentNodeId() != -1) {
+            System.out.println("size: "+node.getEntries().size());
             Node parent = readNode(node.getParentNodeId());
             if (!parent.getIsPartOfTheTree()) return; //Don't update if parent is not part of the tree
         }
@@ -257,9 +261,7 @@ public class IndexFileHandler {
             if (goodPutBytes.length + nodeInBytes.length > BLOCK_SIZE)
                 break;
         }
-
-        //Safe fallback to fixed number (possibly empirical)
-        return 25;
+        return i-300;
     }
 
     /**
