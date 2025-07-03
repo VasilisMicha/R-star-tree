@@ -371,7 +371,7 @@ public class RStarTree {
     /**
      * Computes the MBR of a list of entries.
      */
-    private Rectangle computeMBR(List<Entry> entries) {
+     public static Rectangle computeMBR(List<Entry> entries) {
         if (entries.isEmpty()) throw new IllegalArgumentException("Empty entries");
         double[] min = entries.get(0).getRectangle().getMin().clone();
         double[] max = entries.get(0).getRectangle().getMax().clone();

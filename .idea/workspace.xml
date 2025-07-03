@@ -4,13 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="initial commit">
-      <change afterPath="$PROJECT_DIR$/src/BulkLoader.java" afterDir="false" />
+    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="added UI class">
+      <change afterPath="$PROJECT_DIR$/out/production/DBTechnology/BulkLoader.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/UI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BulkLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BulkLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/datafile.dat" afterDir="false" />
     </list>
@@ -51,18 +55,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "r-star-tree",
-    "last_opened_file_path": "C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.12150669",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;r-star-tree&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.12150669&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maria\IdeaProjects\dbtechnology\dbtechnology\src" />
@@ -150,6 +154,7 @@
     <MESSAGE value="Removed logs and changed main" />
     <MESSAGE value="can store 500k points to datafile" />
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="added UI class" />
+    <option name="LAST_COMMIT_MESSAGE" value="added UI class" />
   </component>
 </project>

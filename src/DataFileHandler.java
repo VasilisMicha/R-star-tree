@@ -218,7 +218,7 @@ class DataFileHandler {
             if (goodPutBytes.length + blockInBytes.length > BLOCK_SIZE)
                 break;
         }
-        return i;
+        return i-100;
     }
 
     public static long getMaxBlockId() {
