@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="adding ui class">
+    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="finished knn, linear knn, linear range query">
+      <change afterPath="$PROJECT_DIR$/src/RStarTreeRangeQuery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/BulkLoader.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/UI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/UI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/indexfile.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BulkLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indexfile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexfile.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +170,7 @@
     <MESSAGE value="merged with DataFileHandler" />
     <MESSAGE value="finished with linear range query" />
     <MESSAGE value="adding ui class" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding ui class" />
+    <MESSAGE value="finished knn, linear knn, linear range query" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished knn, linear knn, linear range query" />
   </component>
 </project>

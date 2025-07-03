@@ -15,6 +15,9 @@ public class RStarTree {
         createNewNode(true, -1); //creating node
     }
 
+    public Node getRoot() {
+        return IndexFileHandler.readNode(IndexFileHandler.getRootBlockId());
+    }
 
     /**
      * Inserts a new point into the R*-tree
