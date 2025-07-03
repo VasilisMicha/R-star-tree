@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="Removed logs and changed main">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours$PointDistancePair.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours$PointDistancePair.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/LinearSearchNearestNeighbours.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Point.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LinearSearchNearestNeighbours.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LinearSearchNearestNeighbours.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/datafile.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +52,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DataFileHnadler&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/maria/IdeaProjects/dbtechnology/dbtechnology/src&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.12150669&quot;,
@@ -108,6 +117,9 @@
     <option name="localTasksCounter" value="6" />
     <servers />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -125,6 +137,7 @@
     <MESSAGE value="KNN Query and some fixes" />
     <MESSAGE value="Datafile is complete" />
     <MESSAGE value="Removed logs and changed main" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed logs and changed main" />
+    <MESSAGE value="initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
   </component>
 </project>

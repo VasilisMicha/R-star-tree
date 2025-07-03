@@ -30,12 +30,12 @@ public class Point implements Serializable {
     public Point(String pointInString){
         try {
             String[] data = pointInString.split(DataFileHandler.getDelimiter());
-            if (data.length != 4 + DataFileHandler.dataDimensions) throw new IllegalStateException("The data on csv are not what are expected");
+            if (data.length != 4 + DataFileHandler.dataDimensions) return;
             this.id = parseLong(data[0]);
             this.name = data[1];
-            double[] coords = new double[DataFileHandler.dataDimensions];
+            coordinates = new double[DataFileHandler.dataDimensions];
             for (int i = 0; i < DataFileHandler.dataDimensions; i++) {
-                coords[i] = parseDouble(data[i + 2]);
+                coordinates[i] = parseDouble(data[i + 2]);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class Point implements Serializable {
 
 
     public double[] getCoordinates() {
-        return coordinates.clone();
+        return coordinates;
     }
 
     public double distanceTo(Point other) {
@@ -96,6 +96,7 @@ public class Point implements Serializable {
     public long getBlockId(){
         return blockId;
     }
+    public long getId(){return id;}
 
     public ArrayList<Double> getCoordinatesAsList() {
         ArrayList<Double> coords = new ArrayList<>();

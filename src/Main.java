@@ -12,9 +12,8 @@ public class Main {
         for (int i=0; i<maxId; i++){
             ArrayList<Point> points = DataFileHandler.readDataFileBlock(i+1);
             for (Point point : points){
-                System.out.println(point.getBlockId()+" ."+point.getName());
+                System.out.println(point.getBlockId()+". id: "+point.getId()+". "+point.getCoordinates()[0]+"-"+point.getCoordinates()[1]);
             }
-
         }
     }
 }

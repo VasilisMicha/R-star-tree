@@ -4,24 +4,26 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class LinearSearchNearestNeighbours {
-    private final List<Point> points;
 
-    public LinearSearchNearestNeighbours(List<Point> points) {
-        this.points = points;
-    }
+    public LinearSearchNearestNeighbours() {}
+
 
     public List<Point> findKNearestNeighbors(Point queryPoint, int k) {
         PriorityQueue<PointDistancePair> heap = new PriorityQueue<>(
                 Comparator.comparingDouble(PointDistancePair::getDistance).reversed()
         );
 
-        for (Point point : points) {
-            double distance = point.distanceTo(queryPoint);
-            if (heap.size() < k) {
-                heap.add(new PointDistancePair(point, distance));
-            } else if (distance < heap.peek().getDistance()) {
-                heap.poll();
-                heap.add(new PointDistancePair(point, distance));
+        long maxId = DataFileHandler.getMaxBlockId();
+        for (int i=0; i<maxId; i++) {
+            ArrayList<Point> points = DataFileHandler.readDataFileBlock(i+1);
+            for (Point point : points) {
+                double distance = point.distanceTo(queryPoint);
+                if (heap.size() < k) {
+                    heap.add(new PointDistancePair(point, distance));
+                } else if (distance < heap.peek().getDistance()) {
+                    heap.poll();
+                    heap.add(new PointDistancePair(point, distance));
+                }
             }
         }
 

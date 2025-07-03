@@ -13,7 +13,7 @@ import java.util.Random;
 class DataFileHandler {
     private static final int BLOCK_SIZE = 32 * 1024; // Each Block is 32KB
     static final String PathToDatafile = "src//datafile.dat";
-    private static String PathToCsvFile = "src//data2.csv";
+    private static String PathToCsvFile = "src//osm_points.csv";
     private static final String DELIMITER = ",";
     public static int dataDimensions;
     private static int maxRecords;
@@ -81,10 +81,13 @@ class DataFileHandler {
                 {
                     if (points.size() == maxRecords)
                     {
+                        long maxBlock = getMaxBlockId()+1;
+                        System.out.println("Block: "+maxBlock+" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         writeDataFileBlock(points);
                         points =  new ArrayList<>();
                     }
                     Point point = new Point(stringPoint);
+                    if (point.getCoordinates() == null) continue;
                     point.setBlockId(getMaxBlockId() + 1);
                     points.add(point);
                 }
@@ -177,6 +180,10 @@ class DataFileHandler {
         try {
             byte[] recordInBytes = serialize(records);
             byte[] goodPutLengthInBytes = serialize(recordInBytes.length);
+            if (recordInBytes.length + goodPutLengthInBytes.length > BLOCK_SIZE){
+                System.out.println(recordInBytes.length + goodPutLengthInBytes.length);
+                return;
+            }
             byte[] block = new byte[BLOCK_SIZE];
             System.arraycopy(goodPutLengthInBytes, 0, block, 0, goodPutLengthInBytes.length);
             System.arraycopy(recordInBytes, 0, block, goodPutLengthInBytes.length, recordInBytes.length);
@@ -197,7 +204,7 @@ class DataFileHandler {
             for (int d = 0; d < dataDimensions; d++){
                 coords[d] = 0.0;
             }
-            Point point = new Point(coords);
+            Point point = new Point("1,k,1.1,2.2,1,2");
             points.add(point);
             byte[] blockInBytes = new byte[0];
             byte[] goodPutBytes = new byte[0];
@@ -210,7 +217,7 @@ class DataFileHandler {
             if (goodPutBytes.length + blockInBytes.length > BLOCK_SIZE)
                 break;
         }
-        return i;
+        return i-100;
     }
 
     public static long getMaxBlockId() {
