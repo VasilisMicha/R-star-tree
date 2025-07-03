@@ -4,19 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="added UI class">
-      <change afterPath="$PROJECT_DIR$/out/production/DBTechnology/BulkLoader.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/UI.java" afterDir="false" />
+    <list default="true" id="5d8e60a2-91d1-4647-a5a8-d5c3223a907c" name="Changes" comment="merged with DataFileHandler">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/DataFileHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/IndexFileHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RStarTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/datafile.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BulkLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BulkLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/RangeQuery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DBTechnology/data2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/datafile.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/datafile.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RStarTreeRangeQuery.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RangeQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RangeQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Skyline_BBS_Query.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,6 +155,7 @@
     <MESSAGE value="can store 500k points to datafile" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="added UI class" />
-    <option name="LAST_COMMIT_MESSAGE" value="added UI class" />
+    <MESSAGE value="merged with DataFileHandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged with DataFileHandler" />
   </component>
 </project>

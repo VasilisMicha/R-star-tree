@@ -83,7 +83,7 @@ class DataFileHandler {
                     if (points.size() == maxRecords)
                     {
                         long maxBlock = getMaxBlockId()+1;
-                        System.out.println("Block: "+maxBlock+" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println("Block: "+maxBlock);
                         writeDataFileBlock(points);
                         points =  new ArrayList<>();
                     }
