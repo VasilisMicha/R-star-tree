@@ -8,7 +8,6 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) throws IOException {
         UI ui = new UI();
-        if (ui.getTree()==null) System.out.println("null");
-        ui.rangeQuery();
+        ui.skyline();
     }
 }
