@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="finished with skyline queries">
+    <list default="true" id="0ebf5873-e217-42f7-b23f-991d340c0cab" name="Changes" comment="final version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IndexFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IndexFileHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RStarTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RStarTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/TestRStarTree.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,10 +102,20 @@
       <option name="presentableId" value="Default" />
       <updated>1743609977692</updated>
     </task>
+    <task id="LOCAL-00001" summary="final version">
+      <option name="closed" value="true" />
+      <created>1751634562117</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1751634562117</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="finished with skyline queries" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished with skyline queries" />
+    <MESSAGE value="final version" />
+    <option name="LAST_COMMIT_MESSAGE" value="final version" />
   </component>
 </project>
