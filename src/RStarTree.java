@@ -49,12 +49,11 @@ public class RStarTree {
 
     private void overflowTreatment(Node N, List<Entry> entries, int level) {
         // OT1: Reinsert or Split
-//        if (level < currentLevel) {
-//            reinsert(N, entries);
-//        } else {
-//            split(N, entries);
-//        }
-        split(N, entries);
+        if (level < currentLevel) {
+            reinsert(N, entries);
+        } else {
+            split(N, entries);
+        }
     }
 
     //Reinserts a portion of entries from a node to improve tree balance.
@@ -169,24 +168,29 @@ public class RStarTree {
     private void split(Node node, List<Entry> allEntries) {
         node.setIsPartOfTheTree(false);
         IndexFileHandler.updateNode(node, IndexFileHandler.getTreeHeight());
+
         int splitAxis = chooseSplitAxis(allEntries);
         List<Entry> sortedEntries = sortEntriesAlongAxis(allEntries, splitAxis, true);
         int splitIndex = chooseSplitIndex(sortedEntries, splitAxis);
         List<Entry> group1 = new ArrayList<>(sortedEntries.subList(0, splitIndex));
         List<Entry> group2 = new ArrayList<>(sortedEntries.subList(splitIndex, sortedEntries.size()));
+
         Node newNode1 = createNewNode(node.isLeaf(), node.getParentNodeId());
         Node newNode2 = createNewNode(node.isLeaf(), node.getParentNodeId());
         newNode1.getEntries().addAll(group1);
         newNode2.getEntries().addAll(group2);
         IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());
         IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());
+
         Node newRoot = null;
         if (node.getBlockId() == IndexFileHandler.getRootBlockId()) {
             newRoot = createNewNode(false, -1);
             newRoot.addEntry(createEntryForNode(newNode1));
             newRoot.addEntry(createEntryForNode(newNode2));
+
             newNode1.setParentNodeId(newRoot.getBlockId());
             newNode2.setParentNodeId(newRoot.getBlockId());
+
             IndexFileHandler.setRootBlockId(newRoot.getBlockId());
             IndexFileHandler.setTreeHeight(IndexFileHandler.getTreeHeight() + 1);
             IndexFileHandler.updateMetaDataBlock();
@@ -194,8 +198,10 @@ public class RStarTree {
         } else {
             Node parent = IndexFileHandler.readNode(node.getParentNodeId());
             parent.getEntries().removeIf(e -> e.getBlockId() == node.getBlockId());
+
             parent.addEntry(createEntryForNode(newNode1));
             parent.addEntry(createEntryForNode(newNode2));
+
             if (parent.getEntries().size() > maxEntries) {
                 overflowTreatment(parent, new ArrayList<>(parent.getEntries()), getCurrentLevel(parent));
             }
@@ -203,6 +209,7 @@ public class RStarTree {
         }
         updateChildParentReferences(newNode1);
         updateChildParentReferences(newNode2);
+
         IndexFileHandler.updateNode(newNode1, IndexFileHandler.getTreeHeight());  // Added
         IndexFileHandler.updateNode(newNode2, IndexFileHandler.getTreeHeight());  // Added
         if (newRoot != null) {
@@ -253,6 +260,7 @@ public class RStarTree {
             int splitIndex = k + 1;
             List<Entry> group1 = sorted.subList(0, splitIndex);
             List<Entry> group2 = sorted.subList(splitIndex, size);
+
             Rectangle mbr1 = computeMBR(group1);
             Rectangle mbr2 = computeMBR(group2);
             sum += mbr1.calculateMargin() + mbr2.calculateMargin();
@@ -270,6 +278,7 @@ public class RStarTree {
             int splitIndex = k + 1;
             List<Entry> group1 = sortedEntries.subList(0, splitIndex);
             List<Entry> group2 = sortedEntries.subList(splitIndex, size);
+
             Rectangle mbr1 = computeMBR(group1);
             Rectangle mbr2 = computeMBR(group2);
             double overlap = mbr1.calculateOverlap(mbr2);

@@ -258,8 +258,7 @@ public class IndexFileHandler {
                 break;
         }
 
-        //Safe fallback to fixed number (possibly empirical)
-        return 25;
+        return i-300;
     }
 
     /**
