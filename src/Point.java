@@ -42,9 +42,9 @@ public class Point implements Serializable {
 
             this.id = parseLong(data[0]);
             this.name = data[1];
-            double[] coords = new double[DataFileHandler.dataDimensions];
+            coordinates = new double[DataFileHandler.dataDimensions];
             for (int i = 0; i < DataFileHandler.dataDimensions; i++) {
-                coords[i] = parseDouble(data[i + 2]);
+                coordinates[i] = parseDouble(data[i + 2]);
             }
             this.coordinates = coords;
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class Point implements Serializable {
 
     //Returns a defensive copy of the coordinates
     public double[] getCoordinates() {
-        return coordinates.clone();
+        return coordinates;
     }
 
     //Calculates Euclidean distance between this point and another
@@ -101,6 +101,7 @@ public class Point implements Serializable {
     public long getBlockId(){
         return blockId;
     }
+    public long getId(){return id;}
 
     //Returns coordinates as a list of Doubles
     public ArrayList<Double> getCoordinatesAsList() {
